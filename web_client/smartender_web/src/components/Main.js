@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
@@ -9,6 +8,7 @@ import Paper from '@material-ui/core/Paper';
 
 import Topbar from './Appbar/Topbar';
 import SimpleBarChart from './Charts/SimpleBarChart';
+import SimpleLineChart from './Charts/SimpleLineChart';
 
 const styles = theme => ({
     root: {
@@ -64,6 +64,7 @@ class Main extends Component {
         await fetch(`${hostname}`)
         .then(response => response.json())
         .then(contents => {
+            console.log(contents);
             this.setState({
                 smartenders: contents.smartenders
             });
@@ -98,25 +99,30 @@ class Main extends Component {
                                 </div>
                             </Grid>
                             {this.state.smartenders.map((item, index) => (
-                                <Grid item xs={12} md={4} key={index}>
-                                    <Paper className={classes.paper}>
-                                        <Typography variant="subtitle1" gutterBottom>
-                                            {item.name} 
-                                        </Typography>
-                                        <Typography variant="body1" gutterBottom>
-                                            Drinks served today: {item.numberOfDrinks} 
-                                        </Typography>
-                                        <Typography component="span" variant="body1" gutterBottom>
-                                            Serves: {item.drinkTypes.map((item, index) => (
-                                                <Typography variant="body1" gutterBottom key={index} className={classes.drinkType}>
-                                                    {item}
-                                                </Typography>
-                                            ))} 
-                                        </Typography>
-                                    </Paper>
+                                <Grid item xs={12} key={index} container>
+                                    <Grid item xs={12} md={6}>
+                                        <Paper className={classes.paper}>
+                                            <Typography variant="subtitle1" gutterBottom>
+                                                {item.name} 
+                                            </Typography>
+                                            <Typography variant="body1" gutterBottom>
+                                                Drinks served today: {item.numberOfDrinks} 
+                                            </Typography>
+                                            <Typography component="span" variant="body1" gutterBottom>
+                                                Serves: {item.drinkTypes.map((item, index) => (
+                                                    <Typography variant="body1" gutterBottom key={index} className={classes.drinkType}>
+                                                        {item}
+                                                    </Typography>
+                                                ))} 
+                                            </Typography>
+                                        </Paper>
+                                    </Grid>
+                                    <Grid item xs={12} md={6}>
+                                        <SimpleLineChart data={item.previousDrinks} />
+                                    </Grid>
                                 </Grid>
                             ))}
-                            <Grid xs={12}>
+                            <Grid item xs={12}>
                                 <SimpleBarChart data={this.state.smartenders} />
                             </Grid>
                         </Grid>

@@ -14,12 +14,12 @@ const SimpleBarChart = (props) => {
     const { theme, data } = props;
     return (
         <ResponsiveContainer width="99%" height={225}>
-            <BarChart data={data}>
+            <BarChart data={data} margin={{top: 24, right: 24}}>
                 <XAxis dataKey="name" />
                 <YAxis />
                 <Tooltip />
                 <Legend />
-                <Bar dataKey="numberOfDrinks" fill="#8884d8" />
+                <Bar dataKey="numberOfDrinks" fill={theme.palette.primary.main} />
             </BarChart>
         </ResponsiveContainer>
     );
