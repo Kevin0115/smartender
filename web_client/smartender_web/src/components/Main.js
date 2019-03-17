@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend } from 'recharts';
 import withStyles from '@material-ui/core/styles/withStyles';
 import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
@@ -7,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import Paper from '@material-ui/core/Paper';
 
 import Topbar from './Appbar/Topbar';
+import SimpleBarChart from './Charts/SimpleBarChart';
 
 const styles = theme => ({
     root: {
@@ -114,6 +116,9 @@ class Main extends Component {
                                     </Paper>
                                 </Grid>
                             ))}
+                            <Grid xs={12}>
+                                <SimpleBarChart data={this.state.smartenders} />
+                            </Grid>
                         </Grid>
                     </Grid>
                 </div>
