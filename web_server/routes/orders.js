@@ -69,7 +69,12 @@ router.post('/test', function(req, res) {
         body: JSON.stringify({message: 'full integration test'}),
       })
       .then(res => res.json())
-      .then(json => res.send("success"));
+      .then(json => res.send("success"))
+      .catch(function(error) {
+      console.log('There has been a problem with your fetch operation: ' + error.message);
+       // ADD THIS THROW error
+        throw error;
+      });
     }
   })
 })

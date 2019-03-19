@@ -58,6 +58,9 @@ export default class ScanScreen extends React.Component {
     // CALL THE API; NEED TO CHECK IF BUSY SO MAYBE DON'T NAVIGATE
     fetch('http://ec2-13-58-113-143.us-east-2.compute.amazonaws.com/orders/test', {
       method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
       body: JSON.stringify({
         "machine_id": 0,
 	"drink_id": 0,
