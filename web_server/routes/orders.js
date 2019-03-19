@@ -45,6 +45,8 @@ router.post('/test', function(req, res) {
   var name = req.body.name;
   var recipe = [];
 
+  console.log(req.body);
+
   Drinks.findOne({drink_id: drink_id})
   .exec(function(err, drink) {
     if (drink == undefined) {
@@ -67,7 +69,7 @@ router.post('/test', function(req, res) {
         body: JSON.stringify({message: 'full integration test'}),
       })
       .then(res => res.json())
-      .then(json => console.log(json));
+      .then(json => res.send("success"));
     }
   })
 })
