@@ -1,0 +1,73 @@
+export default [
+  {
+    
+    drinkId: 0,drinkId: 0,
+    name: 'Gin and Tonic',
+    price: 7.50,
+    ingredients: ['Gin', 'Tonic Water', 'Lime'],
+    uri: require('../assets/images/ginandtonic.png'),
+  },
+  {
+    drinkId: 1,
+    name: 'Rum and Coke',
+    price: 7.50,
+    ingredients: ['Rum', 'Cola', 'Lime'],
+    uri: require('../assets/images/rumandcoke.png'),
+  },
+  {
+    drinkId: 2,
+    name: 'Cosmopolitan',
+    price: 7.50,
+    ingredients: ['Cranberry Juice', 'Cointreau', 'Vodka', 'Lime'],
+    uri: require('../assets/images/cosmopolitan.png'),
+  },
+  {
+    drinkId: 3,
+    name: 'Aviation',
+    price: 7.50,
+    ingredients: ['Creme Yvette', 'Maraschino Liqueur', 'Gin', 'Lemon Juice'],
+    uri: require('../assets/images/aviation.png'),
+  },
+  {
+    drinkId: 4,
+    name: 'Vodka Cranberry',
+    price: 7.50,
+    ingredients: ['Vodka', 'Cranberry Juice', 'Lime'],
+    uri: require('../assets/images/vodkacranberry.png'),
+  },
+  {
+    drinkId: 5,
+    name: 'Moscow Mule',
+    price: 7.50,
+    ingredients: ['Ginger Beer', 'Vodka', 'Lime'],
+    uri: require('../assets/images/moscowmule.png'),
+  },
+  {
+    drinkId: 6,
+    name: 'White Russian',
+    price: 7.50,
+    ingredients: ['Coffee Liqueur', 'Vodka', 'Cream'],
+    uri: require('../assets/images/whiterussian.png'),
+  },
+  {
+    drinkId: 7,
+    name: 'Mojito',
+    price: 7.50,
+    ingredients: ['Rum', 'Soda Water', 'Lime', 'Mint'],
+    uri: require('../assets/images/mojito.png'),
+  },
+  {
+    drinkId: 8,
+    name: 'Dry Martini',
+    price: 7.50,
+    ingredients: ['Dry Vermouth', 'Gin'],
+    uri: require('../assets/images/drymartini.png'),
+  },
+  {
+    drinkId: 9,
+    name: 'Old Fashioned',
+    price: 7.50,
+    ingredients: ['Whiskey', 'Angostura Bitters', 'Sugar Cube'],
+    uri: require('../assets/images/oldfashioned.png'),
+  },
+];
