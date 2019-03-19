@@ -37,7 +37,7 @@ router.post('/', function(req, res) {
   })
 })
 
-// Make an order to machine #id
+// THIS WILL BECOME THE REAL ORDER ENDPOINT, with params
 router.post('/test', function(req, res) {
   var machine_id = req.body.machine_id;
   var username = req.body.username;
@@ -66,12 +66,12 @@ router.post('/test', function(req, res) {
       // TESTING ONLY - CHANGE TO ORDER
       fetch(PI_URL + 'test/', {
         method: 'POST',
-        body: JSON.stringify({message: 'full integration test'}),
+        body: JSON.stringify({message: "Printing " + username + "'s order"}),
       })
       .then(res => res.json())
       .then(json => res.send(json))
       .catch(function(error) {
-      console.log('There has been a problem with your fetch operation: ' + error.message);
+      console.log('Error: ' + error.message);
        // ADD THIS THROW error
         throw error;
       });

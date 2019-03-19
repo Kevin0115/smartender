@@ -12,6 +12,7 @@ import {
   AsyncStorage
 } from 'react-native';
 import { Camera, Permissions, BarCodeScanner } from 'expo';
+import { APP_ID, BASE_URL } from '../constants/Auth';
 import { StyledButton, StyledText, StyledScreen } from '../components/StyledElements';
 
 export default class ScanScreen extends React.Component {
@@ -25,16 +26,22 @@ export default class ScanScreen extends React.Component {
       // Other
       id: null,
       orderInfo: this.props.navigation.getParam('orderInfo'),
+      username: '',
     }
     this._scanCode = this._scanCode.bind(this);
     this._handleOrder = this._handleOrder.bind(this);
   }
 
   async componentDidMount() {
-    console.log(this.state.orderInfo);
+    this._retrieveData();
     const { status } = await Permissions.askAsync(Permissions.CAMERA);
     this.setState({
       hasCameraPermission: status === 'granted'});
+  }
+
+  _retrieveData = async () => {
+    const userData = JSON.parse(await AsyncStorage.getItem('fbUser'));
+    this.setState({username: userData.name});
   }
 
   _scanCode(arg) {
@@ -55,41 +62,31 @@ export default class ScanScreen extends React.Component {
   }
 
   _handleOrder() {
-    // CALL THE API; NEED TO CHECK IF BUSY SO MAYBE DON'T NAVIGATE
-    fetch('http://ec2-13-58-113-143.us-east-2.compute.amazonaws.com/orders/test', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        "machine_id": 0,
-	"drink_id": 0,
-	"name": "Bloody Mary",
-	"shots": 1,
-	"username": "Kevin"
+    const orderInfo = {
+      username: this.state.username,
+      machine_id: this.state.id,
+      drink_id: this.state.orderInfo.drinkId,
+      shots: this.state.orderInfo.shots,
+      name: this.state.orderInfo.name
+    }
+    if (this.state.id) {
+      // CALL THE API; NEED TO CHECK IF BUSY SO MAYBE DON'T NAVIGATE
+      fetch(BASE_URL + 'orders', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(orderInfo)
       })
-    })
-    .then(res => res.text())
-    .then(text => console.log(text))
-    .catch(function(error) {
-      console.log('PROBLEM: ' + error.message);
-       // ADD THIS THROW error
+      .then(res => res.json())
+      .then(json => console.log(json))
+      .catch(function(error) {
+        console.log('Error: ' + error.message);
         throw error;
       });
-    if (this.state.id) {
-      
-      this.props.navigation.navigate(
-        'Order',
-        {orderInfo:
-          {
-            machineId: this.state.id,
-            drinkId: this.state.orderInfo.drinkId,
-            shots: this.state.orderInfo.shots,
-            drinkName: this.state.orderInfo.name,
-          }
-      })
+      this.props.navigation.navigate('Order', orderInfo)
     } else {
-      // Alert.alert('Please Scan a Smartender before Proceeding!')
+      Alert.alert('Please Scan a Smartender before Proceeding!')
     }
   }
 
