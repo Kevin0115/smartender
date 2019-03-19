@@ -64,7 +64,7 @@ router.post('/test', function(req, res) {
       // TESTING ONLY - CHANGE TO ORDER
       fetch(PI_URL + 'test/', {
         method: 'POST',
-        body: JSON.stringify({message: 'fuck 391'}),
+        body: JSON.stringify({message: 'full integration test'}),
       })
       .then(res => res.json())
       .then(json => console.log(json));
