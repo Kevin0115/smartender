@@ -72,7 +72,7 @@ export default class ScanScreen extends React.Component {
     .then(res => res.text())
     .then(text => console.log(text))
     .catch(function(error) {
-      console.log('There has been a problem with your fetch operation: ' + error.message);
+      console.log('PROBLEM: ' + error.message);
        // ADD THIS THROW error
         throw error;
       });
