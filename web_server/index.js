@@ -3,7 +3,8 @@ var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
 
-var clinics = require('./routes/clinics');
+var orders = require('./routes/orders');
+var drinks = require('./routes/drinks');
 
 // Declare application parameters
 var PORT = process.env.PORT || 80;
@@ -12,10 +13,12 @@ var PORT = process.env.PORT || 80;
 require('./config/configuration.js')(app, mongoose);
 
 // Models
-Clinics = require('./models/Clinics.js');
+Orders = require('./models/Orders.js');
+Drinks = require('./models/Drinks.js');
 
 // Routes
-app.use('/clinics', clinics);
+app.use('/orders', orders);
+app.use('/drinks', drinks);
 
 // Server
 app.listen(PORT, function(){

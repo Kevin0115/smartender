@@ -4,7 +4,7 @@ var bodyParser = require('body-parser');
 var STATIC_ROOT = path.resolve(__dirname, '../public');
 
 module.exports = function(app, mongoose){
-  app.set('db', 'mongodb://kevin:pdspds1@ds125385.mlab.com:25385/pds');
+  app.set('db', 'mongodb://kevin:smartender1@ds117806.mlab.com:17806/smartender');
 
   // Defining CORS middleware to enable CORS.
   function cors(req, res, next){
