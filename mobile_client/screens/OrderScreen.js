@@ -25,15 +25,20 @@ export default class OrderScreen extends React.Component {
   componentDidMount() {
     setTimeout(() => {
       this.props.navigation.popToTop();
-    }, 3000)
+    }, 5000)
   }
 
   render() {
     return(
       <StyledScreen>
         <StyledText style={styles.confirm}>
-          Thank you!{'\n'}Your {this.state.orderInfo.drinkName} will be poured shortly.
+          Thank you!{'\n'}Your {this.state.orderInfo.name} will be poured shortly.
         </StyledText>
+        <StyledButton
+          buttonStyle={styles.button}
+          title='OK'
+          onPress={() => this.props.navigation.popToTop()}
+        />
       </StyledScreen>
     );
   }
@@ -44,5 +49,9 @@ const styles = StyleSheet.create({
     textAlign: 'center',
     fontSize: 20,
     width: 280,
+    marginBottom: 60,
   },
+  button: {
+    width: 200
+  }
 });

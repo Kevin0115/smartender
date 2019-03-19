@@ -21,9 +21,10 @@ router.post('/', function(req, res) {
   Drinks.findOne({drink_id: drink_id})
   .exec(function(err, drink) {
     if (drink == undefined) {
-      res.send('Drink does not exist');
+      res.send({error: 'Drink Does Not Exist'});
     } else {
       recipe = drink.recipe;
+      // Insert API call here, and res.send a confirmation
       res.send({
         username: username,
         order: [
@@ -37,7 +38,7 @@ router.post('/', function(req, res) {
   })
 })
 
-// THIS WILL BECOME THE REAL ORDER ENDPOINT, with params
+// THIS WILL BECOME THE REAL ORDER ENDPOINT, with params. KEEP OG. COPY FETCH OVER.
 router.post('/test', function(req, res) {
   var machine_id = req.body.machine_id;
   var username = req.body.username;

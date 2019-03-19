@@ -69,6 +69,7 @@ export default class ScanScreen extends React.Component {
       shots: this.state.orderInfo.shots,
       name: this.state.orderInfo.name
     }
+
     if (this.state.id) {
       // CALL THE API; NEED TO CHECK IF BUSY SO MAYBE DON'T NAVIGATE
       fetch(BASE_URL + 'orders', {
@@ -79,12 +80,12 @@ export default class ScanScreen extends React.Component {
         body: JSON.stringify(orderInfo)
       })
       .then(res => res.json())
-      .then(json => console.log(json))
+      .then(json => console.log("Your Order:\n" + JSON.stringify(json)))
       .catch(function(error) {
         console.log('Error: ' + error.message);
         throw error;
       });
-      this.props.navigation.navigate('Order', orderInfo)
+      this.props.navigation.navigate('Order', {orderInfo: this.state.orderInfo})
     } else {
       Alert.alert('Please Scan a Smartender before Proceeding!')
     }
