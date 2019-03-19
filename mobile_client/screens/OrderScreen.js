@@ -23,9 +23,9 @@ export default class OrderScreen extends React.Component {
   }
 
   componentDidMount() {
-    setTimeout(() => {
-      this.props.navigation.popToTop();
-    }, 5000)
+    // setTimeout(() => {
+    //   this.props.navigation.popToTop();
+    // }, 5000)
   }
 
   render() {
