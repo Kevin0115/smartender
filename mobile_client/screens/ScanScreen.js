@@ -55,7 +55,26 @@ export default class ScanScreen extends React.Component {
   }
 
   _handleOrder() {
+    // CALL THE API; NEED TO CHECK IF BUSY SO MAYBE DON'T NAVIGATE
+    fetch('http://ec2-13-58-113-143.us-east-2.compute.amazonaws.com/orders/test', {
+      method: 'POST',
+      body: JSON.stringify({
+        "machine_id": 0,
+	"drink_id": 0,
+	"name": "Bloody Mary",
+	"shots": 1,
+	"username": "Kevin"
+      })
+    })
+    .then(res => res.text())
+    .then(text => console.log(text))
+    .catch(function(error) {
+      console.log('There has been a problem with your fetch operation: ' + error.message);
+       // ADD THIS THROW error
+        throw error;
+      });
     if (this.state.id) {
+      
       this.props.navigation.navigate(
         'Order',
         {orderInfo:
@@ -67,7 +86,7 @@ export default class ScanScreen extends React.Component {
           }
       })
     } else {
-      Alert.alert('Please Scan a Smartender before Proceeding!')
+      // Alert.alert('Please Scan a Smartender before Proceeding!')
     }
   }
 
