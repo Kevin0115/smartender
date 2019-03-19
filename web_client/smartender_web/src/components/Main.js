@@ -4,11 +4,12 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-import Paper from '@material-ui/core/Paper';
+// import Paper from '@material-ui/core/Paper';
 
 import Topbar from './Appbar/Topbar';
 import SimpleBarChart from './Charts/SimpleBarChart';
-import SimpleLineChart from './Charts/SimpleLineChart';
+// import SimpleLineChart from './Charts/SimpleLineChart';
+import Smartender from './Smartender';
 
 const styles = theme => ({
     root: {
@@ -56,7 +57,9 @@ class Main extends Component {
         smartenders: []
     }
 
-    componentDidMount() {}
+    componentDidMount() {
+        this.getSmartenderDataOnce();
+    }
 
     getSmartenderData = async (event) => {
         event.preventDefault();
@@ -64,7 +67,19 @@ class Main extends Component {
         await fetch(`${hostname}`)
         .then(response => response.json())
         .then(contents => {
-            console.log(contents);
+            // console.log(contents);
+            this.setState({
+                smartenders: contents.smartenders
+            });
+        })
+        .catch(() => console.log("Cannot connect, blocked by browser."));
+    }
+
+    // Used for compnentDidMount
+    getSmartenderDataOnce = async () => {
+        await fetch(`${hostname}`)
+        .then(response => response.json())
+        .then(contents => {
             this.setState({
                 smartenders: contents.smartenders
             });
@@ -99,31 +114,13 @@ class Main extends Component {
                                 </div>
                             </Grid>
                             {this.state.smartenders.map((item, index) => (
-                                <Grid item xs={12} key={index} container>
-                                    <Grid item xs={12} md={6}>
-                                        <Paper className={classes.paper}>
-                                            <Typography variant="subtitle1" gutterBottom>
-                                                {item.name} 
-                                            </Typography>
-                                            <Typography variant="body1" gutterBottom>
-                                                Drinks served today: {item.numberOfDrinks} 
-                                            </Typography>
-                                            <Typography component="span" variant="body1" gutterBottom>
-                                                Serves: {item.drinkTypes.map((item, index) => (
-                                                    <Typography variant="body1" gutterBottom key={index} className={classes.drinkType}>
-                                                        {item}
-                                                    </Typography>
-                                                ))} 
-                                            </Typography>
-                                        </Paper>
-                                    </Grid>
-                                    <Grid item xs={12} md={6}>
-                                        <SimpleLineChart data={item.previousDrinks} />
-                                    </Grid>
-                                </Grid>
+                                <Smartender item={item} key={index} />
                             ))}
                             <Grid item xs={12}>
-                                <SimpleBarChart data={this.state.smartenders} />
+                                <SimpleBarChart 
+                                    data={this.state.smartenders}
+                                    xAxisKey="name"
+                                    yAxisKey="drinksThisWeek" />
                             </Grid>
                         </Grid>
                     </Grid>

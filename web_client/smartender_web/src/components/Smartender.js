@@ -1,13 +1,59 @@
 import React, { Component } from 'react';
+import withStyles from '@material-ui/core/styles/withStyles';
+import Typography from '@material-ui/core/Typography';
+import Grid from '@material-ui/core/Grid';
+import Paper from '@material-ui/core/Paper';
+
+import SimpleBarChart from './Charts/SimpleBarChart';
+import SimpleLineChart from './Charts/SimpleLineChart';
+import DoubleBarChart from './Charts/DoubleBarChart';
+
+const styles = theme => ({
+    paper: {
+        padding: theme.spacing.unit * 3,
+        textAlign: 'left',
+        color: theme.palette.text.secondary
+    },
+    drinkType: {
+        paddingLeft: 10
+    }
+});
 
 class Smartender extends Component {
     render() {
+        const { classes } = this.props;
         return (
-            <div>
-                <button onClick={this.props.getSmartenders}>Get Smartenders</button>
-            </div>
+            <Grid item xs={12} container>
+                <Grid item xs={12} md={4}>
+                    <Paper className={classes.paper}>
+                        <Typography variant="subtitle1" gutterBottom>
+                            {this.props.item.name} 
+                        </Typography>
+                        <Typography variant="body1" gutterBottom>
+                            Drinks served this week: {this.props.item.drinksThisWeek} 
+                        </Typography>
+                        <Typography component="span" variant="body1" gutterBottom>
+                            Serves: {this.props.item.drinks.map((item, index) => (
+                                <Typography variant="body1" gutterBottom key={index} className={classes.drinkType}>
+                                    {item.name}
+                                </Typography>
+                            ))} 
+                        </Typography>
+                    </Paper>
+                </Grid>
+                <Grid item xs={12} md={4}>
+                    <SimpleLineChart data={this.props.item.previousDrinks} />
+                </Grid>
+                <Grid item xs={12} md={4}>
+                    <DoubleBarChart 
+                        data={this.props.item.drinks}
+                        xAxisKey="name"
+                        yAxisKeyBarA="currentVolume"
+                        yAxisKeyBarB="maxVolume" />
+                </Grid>
+            </Grid>
         );
     }
 }
 
-export default Smartender;
+export default withStyles(styles)(Smartender);
