@@ -8,6 +8,7 @@ import Button from '@material-ui/core/Button';
 import Topbar from './Appbar/Topbar';
 import SimpleBarChart from './Charts/SimpleBarChart';
 import Smartender from './Smartender';
+import QuickCards from './QuickCards';
 
 const styles = theme => ({
     root: {
@@ -142,6 +143,7 @@ class Main extends Component {
                                     </div>
                                 </div>
                             </Grid>
+                            <QuickCards />
                             {this.state.smartenders.map((item, index) => (
                                 <Smartender item={item} key={index} />
                             ))}
