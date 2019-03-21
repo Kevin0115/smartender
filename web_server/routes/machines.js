@@ -34,9 +34,9 @@ router.post('/', function(req, res) {
 // PI-TO-SERVER update the inventory of a machine (itself)
 router.put('/:machine_id', function(req, res) {
   var machine_id = req.params.machine_id;
-  Machines.findOne(
+  Machines.updateOne(
     {machine_id: machine_id},
-    {drinks: req.body.inventory}
+    {inventory: req.body.inventory}
   )
   .exec(function(err, machine) {
     if(err) {

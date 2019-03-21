@@ -28,9 +28,6 @@ router.post('/', function(req, res) {
     if(err || machine == undefined) {
       res.send({status: 'Error'});
     } else {
-
-      console.log(machine);
-
       currInventory = machine.inventory;
       Drinks.findOne({drink_id: drink_id})
       .exec(function(err, drink) {
@@ -46,12 +43,13 @@ router.post('/', function(req, res) {
             console.log(err);
             res.send({status: 'No Inventory'});
           }
-          console.log('NEW INVENTORY: ' + JSON.stringify(newInventory));
-
+          
           // API call to self/machines/:machine_id to update inventory
           fetch(SERVER_URL + 'machines/' + machine_id, {
             method: 'PUT',
-            // body: JSON.stringify({message: "Pouring " + username + "'s drink!"}),
+            headers: {
+              'Content-Type': 'application/json'
+            },
             body: JSON.stringify({inventory: newInventory}),
           })
           .then(res => res.json())
@@ -67,11 +65,12 @@ router.post('/', function(req, res) {
               }
             ]
           }
-          // Insert API call here, and res.send a confirmation
-          // TESTING ONLY - CHANGE TO ORDER
+
           fetch(PI_URL + 'order/', {
             method: 'POST',
-            // body: JSON.stringify({message: "Pouring " + username + "'s drink!"}),
+            headers: {
+              'Content-Type': 'application/json'
+            },
             body: JSON.stringify(order),
           })
           .then(res => res.json())

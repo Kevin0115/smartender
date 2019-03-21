@@ -7,6 +7,7 @@ exports.updateInventory = function(inventory, recipe) {
     if (newVolume < 0) {
       throw "Not Enough Inventory"; 
     } else {
+
       newInventory[i] = newVolume;
     }
   }
