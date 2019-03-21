@@ -4,11 +4,9 @@ import CssBaseline from '@material-ui/core/CssBaseline';
 import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Button from '@material-ui/core/Button';
-// import Paper from '@material-ui/core/Paper';
 
 import Topbar from './Appbar/Topbar';
 import SimpleBarChart from './Charts/SimpleBarChart';
-// import SimpleLineChart from './Charts/SimpleLineChart';
 import Smartender from './Smartender';
 
 const styles = theme => ({
@@ -49,7 +47,7 @@ const styles = theme => ({
     }
 });
 
-const hostname = "http://localhost:8888/";
+const hostname = "http://ec2-13-58-113-143.us-east-2.compute.amazonaws.com/machines";
 
 class Main extends Component {
 
@@ -69,7 +67,7 @@ class Main extends Component {
         .then(contents => {
             // console.log(contents);
             this.setState({
-                smartenders: contents.smartenders
+                smartenders: contents
             });
         })
         .catch(() => console.log("Cannot connect, blocked by browser."));
@@ -81,7 +79,7 @@ class Main extends Component {
         .then(response => response.json())
         .then(contents => {
             this.setState({
-                smartenders: contents.smartenders
+                smartenders: contents
             });
         })
         .catch(() => console.log("Cannot connect, blocked by browser."));
@@ -120,7 +118,7 @@ class Main extends Component {
                                 <SimpleBarChart 
                                     data={this.state.smartenders}
                                     xAxisKey="name"
-                                    yAxisKey="drinksThisWeek" />
+                                    yAxisKey="drinks_this_week" />
                             </Grid>
                         </Grid>
                     </Grid>
