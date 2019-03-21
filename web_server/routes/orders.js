@@ -44,7 +44,7 @@ router.post('/', function(req, res) {
         body: JSON.stringify(order),
       })
       .then(res => res.json())
-      .then(json => res.send(oh))
+      .then(json => res.send(json))
       .catch(function(error) {
         console.log('Error: ' + error.message);
         // ADD THIS THROW error

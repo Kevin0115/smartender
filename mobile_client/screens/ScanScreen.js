@@ -80,7 +80,7 @@ export default class ScanScreen extends React.Component {
         body: JSON.stringify(orderInfo)
       })
       .then(res => res.json())
-      .then(json => console.log("Your Order:\n" + JSON.stringify(json)))
+      .then(json => console.log("\nYour Order:\n" + JSON.stringify(json)))
       .catch(function(error) {
         console.log('Error: ' + error.message);
         throw error;
