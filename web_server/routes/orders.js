@@ -7,10 +7,6 @@ var fetch = require('node-fetch');
 var PI_URL = 'https://smartender-5t3k-qc8z.try.yaler.io/';
 var SERVER_URL = 'http://ec2-13-58-113-143.us-east-2.compute.amazonaws.com/';
 
-router.get('/', function(req, res) {
-  res.send('Hello World');
-})
-
 // Make an order to machine #id
 router.post('/', function(req, res) {
   var machine_id = req.body.machine_id;
