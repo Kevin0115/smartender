@@ -5,6 +5,7 @@ var mongoose = require('mongoose');
 
 var orders = require('./routes/orders');
 var drinks = require('./routes/drinks');
+var machines = require('./routes/machines');
 
 // Declare application parameters
 var PORT = process.env.PORT || 80;
@@ -15,10 +16,12 @@ require('./config/configuration.js')(app, mongoose);
 // Models
 Orders = require('./models/Orders.js');
 Drinks = require('./models/Drinks.js');
+Machines = require('./models/Machines.js');
 
 // Routes
 app.use('/orders', orders);
 app.use('/drinks', drinks);
+app.use('/machines', machines);
 
 // Server
 app.listen(PORT, function(){
