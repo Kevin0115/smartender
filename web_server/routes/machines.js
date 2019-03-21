@@ -5,11 +5,11 @@ var utils = require('../utils/utils');
 // Get the information of all smartender machines
 router.get('/', function(req, res) {
   Machines.find({})
-  .exec(function(err, drinks) {
+  .exec(function(err, machines) {
     if(err) {
       res.send({status: 'Error'})
     } else {
-      res.send(drinks);
+      res.send(machines);
     }
   })
 })
@@ -26,7 +26,7 @@ router.post('/', function(req, res) {
     if(err) {
       res.send({status: 'Error'});
     } else {
-      res.send(machine);
+      res.send({status: 'Machine Initialized'});
     }
   })
 })
@@ -42,7 +42,7 @@ router.put('/:machine_id', function(req, res) {
     if(err) {
       res.send({status: 'Error'});
     } else {
-      res.send({status: 'OK'});
+      res.send({status: 'Inventory Updated'});
     }
   })
 })

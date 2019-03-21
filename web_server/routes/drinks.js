@@ -12,7 +12,7 @@ router.post('/', function(req, res) {
     if(err) {
       res.send({status: 'Error'});
     } else {
-      res.send(drink);
+      res.send({status: 'Drink Created'});
     }
   })
 })
