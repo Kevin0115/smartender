@@ -45,6 +45,8 @@ export default class App extends React.Component {
         require('./assets/images/mojito.png'),
         require('./assets/images/drymartini.png'),
         require('./assets/images/oldfashioned.png'),
+        require('./assets/images/success.png'),
+        require('./assets/images/error.png')
       ]),
       Font.loadAsync({
         // ...Icon.Ionicons.font,
