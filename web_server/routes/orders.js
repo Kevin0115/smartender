@@ -22,8 +22,6 @@ router.post('/', function(req, res) {
   var newInventory = [];
   var updateFlag = true;
 
-  // First, find machine in Machines and THEN send the order.
-  // Right now, we're assuming and working with one machine
   Machines.findOne({machine_id: machine_id})
   .exec(function(err, machine) {
     if(err || machine == undefined) {
@@ -36,7 +34,6 @@ router.post('/', function(req, res) {
           res.send({status: 'Error'});
         } else {
           recipe = drink.recipe;
-
           try {
             newInventory = utils.updateInventory(currInventory, recipe);
           }
@@ -67,6 +64,11 @@ router.post('/', function(req, res) {
                 }
               ]
             }
+
+            // With multiple machines, would index machine_id in a library of
+            // machine_id to URL pairs.
+
+            // For now, we direct ALL orders to the same machine, regardless of id
 
             fetch(PI_URL + 'order/', {
               method: 'POST',
