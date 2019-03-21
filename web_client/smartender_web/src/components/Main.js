@@ -66,11 +66,9 @@ class Main extends Component {
         .then(response => response.json())
         .then(contents => {
             // console.log(contents);
-            this.setState({
-                smartenders: contents
-            });
+            this.setStateSmartender(contents);
         })
-        .catch(() => console.log("Cannot connect, blocked by browser."));
+        .catch((e) => console.log(e));
     }
 
     // Used for compnentDidMount
@@ -78,11 +76,44 @@ class Main extends Component {
         await fetch(`${hostname}`)
         .then(response => response.json())
         .then(contents => {
-            this.setState({
-                smartenders: contents
-            });
+            this.setStateSmartender(contents);
         })
-        .catch(() => console.log("Cannot connect, blocked by browser."));
+        .catch((e) => console.log(e));
+    }
+
+    setStateSmartender = (data) => {
+        var smartenderData = data;
+        var smartendersArr = [];
+
+        var j;
+        for( j = 0; j < smartenderData.length; j++) {
+            var smartenderObj = smartenderData[j];
+
+            if(typeof(smartenderObj) !== 'undefined') {
+                var inventoryArr = smartenderObj.inventory;
+                var drinksArr = smartenderObj.drinks;
+    
+                var drinksInv = [];
+
+                if(inventoryArr.length !== 0 && drinksArr !== 0) {
+                    var i;
+                    for( i = 0; i < drinksArr.length; i++ ) {
+                        var drinkObj = drinksArr[i];
+                        drinkObj.curr_volume = inventoryArr[i];
+                        drinksInv.push(drinkObj);
+                    }
+                    smartenderObj.drinks = drinksInv;
+                    smartendersArr.push(smartenderObj);
+                }
+                   
+            }
+            
+        }
+
+        this.setState({
+            smartenders: smartendersArr
+        });
+        
     }
 
     render() {
