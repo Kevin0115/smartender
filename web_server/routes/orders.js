@@ -18,40 +18,13 @@ router.post('/', function(req, res) {
   var name = req.body.name;
   var recipe = [];
 
-  Drinks.findOne({drink_id: drink_id})
-  .exec(function(err, drink) {
-    if (drink == undefined) {
-      res.send({error: 'Drink Does Not Exist'});
-    } else {
-      recipe = drink.recipe;
-      // Insert API call here, and res.send a confirmation
-      res.send({
-        username: username,
-        order: [
-          {
-            name: name,
-            recipe: recipe
-          }
-        ]
-      })
-    }
-  })
-})
-
-// THIS WILL BECOME THE REAL ORDER ENDPOINT, with params. KEEP OG. COPY FETCH OVER.
-router.post('/test', function(req, res) {
-  var machine_id = req.body.machine_id;
-  var username = req.body.username;
-  var drink_id = req.body.drink_id;
-  var name = req.body.name;
-  var recipe = [];
-
-  console.log(req.body);
+  // First, find machine in Machines and THEN send the order.
+  // Right now, we're assuming and working with one machine
 
   Drinks.findOne({drink_id: drink_id})
   .exec(function(err, drink) {
     if (drink == undefined) {
-      res.send('Drink does not exist');
+      res.send({status: 'Drink Does Not Exist'});
     } else {
       recipe = drink.recipe;
       var order = {
@@ -63,17 +36,17 @@ router.post('/test', function(req, res) {
           }
         ]
       }
-
+      // Insert API call here, and res.send a confirmation
       // TESTING ONLY - CHANGE TO ORDER
       fetch(PI_URL + 'test/', {
         method: 'POST',
-        body: JSON.stringify({message: "Printing " + username + "'s order"}),
+        body: JSON.stringify({message: "Pouring " + username + "'s drink!"}),
       })
       .then(res => res.json())
       .then(json => res.send(json))
       .catch(function(error) {
-      console.log('Error: ' + error.message);
-       // ADD THIS THROW error
+        console.log('Error: ' + error.message);
+        // ADD THIS THROW error
         throw error;
       });
     }

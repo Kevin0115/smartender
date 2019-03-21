@@ -10,9 +10,9 @@ router.post('/', function(req, res) {
     recipe: req.body.recipe
   }, function(err, drink) {
     if(err) {
-      res.send('Something went wrong');
+      res.send({status: 'Error'});
     } else {
-      res.send('Drink Created');
+      res.send(drink);
     }
   })
 })
