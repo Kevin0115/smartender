@@ -28,7 +28,10 @@ router.post('/', function(req, res) {
     if(err || machine == undefined) {
       res.send({status: 'Error'});
     } else {
-      currInventory = machine.drinks;
+
+      console.log(machine);
+
+      currInventory = machine.inventory;
       Drinks.findOne({drink_id: drink_id})
       .exec(function(err, drink) {
         if (err || drink == undefined) {
