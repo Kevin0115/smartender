@@ -41,7 +41,7 @@ router.post('/', function(req, res) {
       fetch(PI_URL + 'order/', {
         method: 'POST',
         // body: JSON.stringify({message: "Pouring " + username + "'s drink!"}),
-        body: JSON.stringify({message: "Pouring " + username + "'s drink!"}),
+        body: JSON.stringify(order),
       })
       .then(res => res.json())
       .then(json => res.send(oh))
