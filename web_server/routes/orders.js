@@ -20,6 +20,7 @@ router.post('/', function(req, res) {
   var recipe = [];
   var currInventory = [];
   var newInventory = [];
+  var updateFlag = true;
 
   // First, find machine in Machines and THEN send the order.
   // Right now, we're assuming and working with one machine
@@ -40,42 +41,46 @@ router.post('/', function(req, res) {
             newInventory = utils.updateInventory(currInventory, recipe);
           }
           catch(err) {
+            updateFlag = false;
             console.log(err);
+          }
+
+          if(updateFlag) {
+            // API call to self/machines/:machine_id to update inventory
+            fetch(SERVER_URL + 'machines/' + machine_id, {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({inventory: newInventory}),
+            })
+            .then(res => res.json())
+            .then(json => console.log(json))
+            .catch(error => console.log('Error: ' + error.message));
+
+            var order = {
+              username: username,
+              order: [
+                {
+                  name: name,
+                  recipe: recipe
+                }
+              ]
+            }
+
+            fetch(PI_URL + 'order/', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(order),
+            })
+            .then(res => res.json())
+            .then(json => res.send(json))
+            .catch(error => console.log('Error: ' + error.message));
+          } else {
             res.send({status: 'No Inventory'});
           }
-          
-          // API call to self/machines/:machine_id to update inventory
-          fetch(SERVER_URL + 'machines/' + machine_id, {
-            method: 'PUT',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({inventory: newInventory}),
-          })
-          .then(res => res.json())
-          .then(json => console.log(json))
-          .catch(error => console.log('Error: ' + error.message));
-
-          var order = {
-            username: username,
-            order: [
-              {
-                name: name,
-                recipe: recipe
-              }
-            ]
-          }
-
-          fetch(PI_URL + 'order/', {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(order),
-          })
-          .then(res => res.json())
-          .then(json => res.send(json))
-          .catch(error => console.log('Error: ' + error.message));
         }
       })
     }
