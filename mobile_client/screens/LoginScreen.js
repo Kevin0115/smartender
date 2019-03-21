@@ -130,13 +130,13 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#3b4998',
-    width: 270,
+    width: 254,
     height: 56,
     paddingTop: 2,
     borderRadius: 6,
   },
   buttonTitle: {
-    fontFamily: 'open-sans',
+    fontFamily: 'cabin',
     fontSize: 16,
     marginLeft: 16,
   },

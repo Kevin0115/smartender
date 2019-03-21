@@ -50,6 +50,9 @@ export default class App extends React.Component {
         // ...Icon.Ionicons.font,
         'open-sans': require('./assets/fonts/OpenSans-Regular.ttf'),
         'open-sans-bold': require('./assets/fonts/OpenSans-Bold.ttf'),
+        'cabin-bold': require('./assets/fonts/Cabin-Bold.ttf'),
+        'cabin': require('./assets/fonts/Cabin-Regular.ttf'),
+        'cabin-medium': require('./assets/fonts/Cabin-Medium.ttf'),
       }),
     ]);
   };

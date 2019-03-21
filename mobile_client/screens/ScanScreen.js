@@ -12,8 +12,9 @@ import {
   AsyncStorage
 } from 'react-native';
 import { Camera, Permissions, BarCodeScanner } from 'expo';
-import { LOCALHOST, BASE_URL } from '../constants/Auth';
 import { StyledButton, StyledText, StyledScreen } from '../components/StyledElements';
+
+import Success from '../assets/images/success.png';
 
 export default class ScanScreen extends React.Component {
   constructor(props) {
@@ -61,6 +62,18 @@ export default class ScanScreen extends React.Component {
     );
   }
 
+  _renderCheck() {
+    return (
+      this.state.id == null ?
+      null
+      :
+      <Image
+        source={require('../assets/images/success.png')}
+        style={styles.check}              
+      />
+    )
+  }
+
   _handleOrder() {
     const orderInfo = {
       username: this.state.username,
@@ -69,23 +82,8 @@ export default class ScanScreen extends React.Component {
       shots: this.state.orderInfo.shots,
       name: this.state.orderInfo.name
     }
-
     if (this.state.id) {
-      // CALL THE API; NEED TO CHECK IF BUSY SO MAYBE DON'T NAVIGATE
-      fetch(BASE_URL + 'orders', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(orderInfo)
-      })
-      .then(res => res.json())
-      .then(json => console.log("\nYour Order:\n\n" + JSON.stringify(json)))
-      .catch(function(error) {
-        console.log('Error: ' + error.message);
-        throw error;
-      });
-      this.props.navigation.navigate('Order', {orderInfo: this.state.orderInfo})
+      this.props.navigation.navigate('Order', {orderInfo: orderInfo});
     } else {
       Alert.alert('Please Scan a Smartender before Proceeding!')
     }
@@ -110,7 +108,9 @@ export default class ScanScreen extends React.Component {
               type={this.state.type}
               autoFocus={this.state.focus}
               onBarCodeScanned={this._scanCode}
-            />
+            >
+              {this._renderCheck()}
+            </BarCodeScanner>
           </View>
           {this._renderID()}
           <View style={styles.buttonContainer}>
@@ -128,6 +128,8 @@ export default class ScanScreen extends React.Component {
 
 const styles = StyleSheet.create({
   scanner: {
+    justifyContent: 'center',
+    alignItems: 'center',
     height: 280,
     width: 280,
   },
@@ -144,5 +146,9 @@ const styles = StyleSheet.create({
   button: {
     backgroundColor: '#53c16d',
     width: 200,
+  },
+  check: {
+    width: 100,
+    height: 100,
   }
 });

@@ -66,18 +66,24 @@ export default class DrinkScreen extends React.Component {
         <View style={styles.buttonContainer}>
           <View>
             <StyledButton
+              buttonStyle={styles.customButton}
+              titleStyle={styles.buttonTitle}
               title='Double'
               onPress={() => this._handleCustom(2)}
             />
           </View>
           <View>
             <StyledButton
+              buttonStyle={styles.customButton}
+              titleStyle={styles.buttonTitle}
               title='Regular'
               onPress={() => this._handleCustom(1)}
             />
           </View>
           <View>
             <StyledButton
+              buttonStyle={styles.customButton}
+              titleStyle={styles.buttonTitle}
               title='Virgin'
               onPress={() => this._handleCustom(0)}
             />
@@ -124,6 +130,7 @@ const styles = StyleSheet.create({
   title: {
     flex: 0.7,
     fontSize: 20,
+    paddingTop: 10,
   },
   listContainer: {
     flex: 2.5,
@@ -148,5 +155,11 @@ const styles = StyleSheet.create({
   proceed: {
     backgroundColor: '#53c16d',
     width: 200,
+  },
+  buttonTitle: {
+    fontSize: 16,
+  },
+  customButton: {
+    width: 90,
   }
 });
