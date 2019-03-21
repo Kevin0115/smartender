@@ -4,7 +4,6 @@ import Typography from '@material-ui/core/Typography';
 import Grid from '@material-ui/core/Grid';
 import Paper from '@material-ui/core/Paper';
 
-import SimpleBarChart from './Charts/SimpleBarChart';
 import SimpleLineChart from './Charts/SimpleLineChart';
 import DoubleBarChart from './Charts/DoubleBarChart';
 
@@ -30,7 +29,7 @@ class Smartender extends Component {
                             {this.props.item.name} 
                         </Typography>
                         <Typography variant="body1" gutterBottom>
-                            Drinks served this week: {this.props.item.drinksThisWeek} 
+                            Drinks served this week: {this.props.item.drinks_this_week} 
                         </Typography>
                         <Typography component="span" variant="body1" gutterBottom>
                             Serves: {this.props.item.drinks.map((item, index) => (
@@ -42,14 +41,14 @@ class Smartender extends Component {
                     </Paper>
                 </Grid>
                 <Grid item xs={12} md={4}>
-                    <SimpleLineChart data={this.props.item.previousDrinks} />
+                    <SimpleLineChart data={this.props.item.weekly_log} />
                 </Grid>
                 <Grid item xs={12} md={4}>
                     <DoubleBarChart 
                         data={this.props.item.drinks}
                         xAxisKey="name"
-                        yAxisKeyBarA="currentVolume"
-                        yAxisKeyBarB="maxVolume" />
+                        yAxisKeyBarA="curr_volume"
+                        yAxisKeyBarB="max_volume" />
                 </Grid>
             </Grid>
         );
