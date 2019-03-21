@@ -8,7 +8,7 @@ import Button from '@material-ui/core/Button';
 import Topbar from './Appbar/Topbar';
 import SimpleBarChart from './Charts/SimpleBarChart';
 import Smartender from './Smartender';
-import QuickCards from './QuickCards';
+import QuickCard from './QuickCard';
 
 const styles = theme => ({
     root: {
@@ -53,7 +53,13 @@ const hostname = "http://ec2-13-58-113-143.us-east-2.compute.amazonaws.com/machi
 class Main extends Component {
 
     state = {
-        smartenders: []
+        smartenders: [],
+        lifetimeDrinks: 0,
+        lifetimeEarnings: 'N/A',
+        currentDrinks: 0,
+        currentEarnings: 'N/A',
+        totalSmartenders: 0,
+        bestSmartender: 0
     }
 
     componentDidMount() {
@@ -82,17 +88,46 @@ class Main extends Component {
         .catch((e) => console.log(e));
     }
 
+    sumWeeklyLog = (data) => {
+        var i;
+        var sum = 0;
+        for(i = 0; i < data.length; i++) {
+            sum += data[i].drinks;
+        }
+
+        return sum;
+    }
+
     setStateSmartender = (data) => {
         var smartenderData = data;
         var smartendersArr = [];
+        var lifetimeDrinks = 0;
+        var currentDrinks = 0;
+        var totalSmartenders = 0;
+        var bestSmartender = 0;
+        var bestWeeklyLogSum = 0;
 
         var j;
         for( j = 0; j < smartenderData.length; j++) {
             var smartenderObj = smartenderData[j];
 
+            // refactor smartender data
             if(typeof(smartenderObj) !== 'undefined') {
                 var inventoryArr = smartenderObj.inventory;
                 var drinksArr = smartenderObj.drinks;
+                var weeklyLog = smartenderObj.weekly_log;
+                var drinksThisWeek = smartenderObj.drinks_this_week;
+
+                var weeklyLogSum = this.sumWeeklyLog(weeklyLog);
+
+                if(weeklyLogSum > bestWeeklyLogSum) {
+                    bestWeeklyLogSum = weeklyLogSum;
+                    bestSmartender = j; // change this to smartender id?
+                }
+
+                lifetimeDrinks += weeklyLogSum + drinksThisWeek;
+                currentDrinks += drinksThisWeek;
+                totalSmartenders += 1;
     
                 var drinksInv = [];
 
@@ -106,13 +141,18 @@ class Main extends Component {
                     smartenderObj.drinks = drinksInv;
                     smartendersArr.push(smartenderObj);
                 }
-                   
             }
+
+
             
         }
 
         this.setState({
-            smartenders: smartendersArr
+            smartenders: smartendersArr,
+            lifetimeDrinks: lifetimeDrinks,
+            currentDrinks: currentDrinks,
+            totalSmartenders: totalSmartenders,
+            bestSmartender: bestSmartender
         });
         
     }
@@ -143,7 +183,14 @@ class Main extends Component {
                                     </div>
                                 </div>
                             </Grid>
-                            <QuickCards />
+                            <Grid spacing={24} item xs={12} container>
+                                <QuickCard dataVal={this.state.lifetimeDrinks} dataKey="Lifetime Drinks"/>
+                                <QuickCard dataVal={this.state.lifetimeEarnings} dataKey="Lifetime Earnings"/>
+                                <QuickCard dataVal={this.state.currentDrinks} dataKey="Current Drinks"/>
+                                <QuickCard dataVal={this.state.currentEarnings} dataKey="Current Earnings"/>
+                                <QuickCard dataVal={this.state.totalSmartenders} dataKey="Total Smartenders"/>
+                                <QuickCard dataVal={this.state.bestSmartender} dataKey="Best Smartender"/>
+                            </Grid>
                             {this.state.smartenders.map((item, index) => (
                                 <Smartender item={item} key={index} />
                             ))}

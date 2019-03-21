@@ -18,10 +18,10 @@ class QuickCard extends Component {
         return (
             <Grid item xs={2}>
                 <Paper className={classes.paper} >
-                    <Typography variant="h6" gutterbottom >
+                    <Typography variant="h6">
                         {dataVal}
                     </Typography>
-                    <Typography variant="subtitle2" gutterbottom >
+                    <Typography variant="subtitle2">
                         {dataKey}
                     </Typography>
                 </Paper>
