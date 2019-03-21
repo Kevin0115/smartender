@@ -66,7 +66,10 @@ export default class SettingsScreen extends React.Component {
             {this.state.userName}
           </StyledText>
         </View>
-        <View style={{flex: 3}} />
+        <StyledText style={{flex: 1, fontSize: 20}}>
+            Drink Responsibly!
+          </StyledText>
+        <View style={{flex: 2}} />
         <View style={styles.buttonContainer}>
           <StyledButton
             buttonStyle={styles.logoutButton}
@@ -94,17 +97,17 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   profilePic: {
-    borderWidth: 6,
+    borderWidth: 2,
     borderColor: Colors.black,
     width: 160,
     height: 160,
-    borderRadius: 10,
+    borderRadius: 8,
   },
   nameContainer: {
     flex: 1,
   },
   name: {
-    fontSize: 24, 
+    fontSize: 28, 
   },
   buttonContainer: {
     flex: 0.8,

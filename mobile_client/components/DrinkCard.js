@@ -75,6 +75,7 @@ const styles = StyleSheet.create({
   },
   content: {
     flexDirection: 'column',
+    marginTop: 8,
   },
   title: {
     fontSize: 18,

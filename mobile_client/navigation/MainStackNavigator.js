@@ -85,7 +85,7 @@ const headerStyle = {
   },
   headerTitleStyle: {
     fontSize: 20,
-    fontFamily: 'open-sans-bold',
+    fontFamily: 'cabin-bold',
   },
   headerBackTitle: null,
 };

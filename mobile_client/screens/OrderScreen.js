@@ -9,8 +9,10 @@ import {
   View,
   FlatList,
   Alert,
-  AsyncStorage
+  AsyncStorage,
+  ActivityIndicator
 } from 'react-native';
+import { LOCALHOST, BASE_URL } from '../constants/Auth';
 import { StyledButton, StyledText, StyledScreen } from '../components/StyledElements';
 
 
@@ -18,19 +20,56 @@ export default class OrderScreen extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
+      status: true,
       orderInfo: this.props.navigation.getParam('orderInfo'),
+      response: false,
     }
+    this._renderIndicator = this._renderIndicator.bind(this);
+    this._renderMessage = this._renderMessage.bind(this);
   }
 
   componentDidMount() {
-    // setTimeout(() => {
-    //   this.props.navigation.popToTop();
-    // }, 5000)
+    setTimeout(() => {
+      this.setState({response: true});
+    }, 2000)
+    fetch(BASE_URL + 'orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(this.props.navigation.getParam('orderInfo'))
+    })
+    .then(res => res.json())
+    // .then(json => console.log("\nYour Order:\n\n" + JSON.stringify(json)))
+    .then(json => this.setState({status: json.status !== 'No Inventory'}))
+    .catch(function(error) {
+      console.log('Error: ' + error.message);
+      throw error;
+    });
   }
 
-  render() {
-    return(
-      <StyledScreen>
+  _renderIndicator() {
+    return (
+      this.state.response ?
+      this._renderMessage()
+      :
+      <View>
+        <StyledText style={styles.confirm}>
+          Please wait while your order is processed.
+        </StyledText>
+        <ActivityIndicator size='large' color='#0000ff' />
+      </View>
+    );
+  }
+
+  _renderMessage() {    
+    return (
+      this.state.status ?
+      <View style={styles.container}>
+        <Image
+          source={require('../assets/images/success.png')}
+          style={styles.check}              
+        />
         <StyledText style={styles.confirm}>
           Thank you!{'\n'}Your {this.state.orderInfo.name} will be poured shortly.
         </StyledText>
@@ -39,8 +78,31 @@ export default class OrderScreen extends React.Component {
           title='OK'
           onPress={() => this.props.navigation.popToTop()}
         />
+      </View>
+      :
+      <View style={styles.container}>
+        <Image
+          source={require('../assets/images/error.png')}
+          style={styles.check}              
+        />
+        <StyledText style={styles.confirm}>
+          We're sorry, we're currently out of this drink. Please try again later.
+        </StyledText>
+        <StyledButton
+          buttonStyle={styles.button}
+          title='OK'
+          onPress={() => this.props.navigation.popToTop()}
+        />
+      </View>
+    )
+  }
+
+  render() {
+    return (
+      <StyledScreen>
+        {this._renderIndicator()}
       </StyledScreen>
-    );
+    )
   }
 }
 
@@ -53,5 +115,14 @@ const styles = StyleSheet.create({
   },
   button: {
     width: 200
+  },
+  container: {
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  check: {
+    height: 75,
+    width: 75,
+    marginBottom: 40,
   }
 });

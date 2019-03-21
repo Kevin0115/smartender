@@ -78,10 +78,10 @@ export class StyledDatePicker extends React.Component {
 
 const styles = StyleSheet.create({
   styledText: {
-    fontFamily: 'open-sans'
+    fontFamily: 'cabin'
   },
   styledTextBold: {
-    fontFamily: 'open-sans-bold'
+    fontFamily: 'cabin-bold'
   },
   whiteText: {
     color: '#fff',
@@ -111,7 +111,7 @@ const styles = StyleSheet.create({
     backgroundColor: Colors.themeYellow,
   },
   styledTitle: {
-    fontFamily: 'open-sans',
+    fontFamily: 'cabin',
   },
   styledScreen: {
     flex: 1,
