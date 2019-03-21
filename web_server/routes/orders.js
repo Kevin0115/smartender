@@ -52,7 +52,7 @@ router.post('/', function(req, res) {
           fetch(SERVER_URL + 'machines/' + machine_id, {
             method: 'PUT',
             // body: JSON.stringify({message: "Pouring " + username + "'s drink!"}),
-            body: JSON.stringify(newInventory),
+            body: JSON.stringify({inventory: newInventory}),
           })
           .then(res => res.json())
           .then(json => console.log(json))
