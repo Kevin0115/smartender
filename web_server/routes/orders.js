@@ -38,12 +38,13 @@ router.post('/', function(req, res) {
       }
       // Insert API call here, and res.send a confirmation
       // TESTING ONLY - CHANGE TO ORDER
-      fetch(PI_URL + 'test/', {
+      fetch(PI_URL + 'order/', {
         method: 'POST',
+        // body: JSON.stringify({message: "Pouring " + username + "'s drink!"}),
         body: JSON.stringify({message: "Pouring " + username + "'s drink!"}),
       })
       .then(res => res.json())
-      .then(json => res.send(json))
+      .then(json => res.send(oh))
       .catch(function(error) {
         console.log('Error: ' + error.message);
         // ADD THIS THROW error

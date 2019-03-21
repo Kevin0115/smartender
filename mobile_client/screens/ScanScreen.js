@@ -12,7 +12,7 @@ import {
   AsyncStorage
 } from 'react-native';
 import { Camera, Permissions, BarCodeScanner } from 'expo';
-import { APP_ID, BASE_URL } from '../constants/Auth';
+import { LOCALHOST, BASE_URL } from '../constants/Auth';
 import { StyledButton, StyledText, StyledScreen } from '../components/StyledElements';
 
 export default class ScanScreen extends React.Component {
