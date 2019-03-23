@@ -3,7 +3,6 @@ var router = express.Router();
 var utils = require('../utils/utils');
 var fetch = require('node-fetch');
 
-// TEMPORARY TESTING
 var PI_URL = 'https://smartender-5t3k-qc8z.try.yaler.io/';
 var SERVER_URL = 'http://ec2-13-58-113-143.us-east-2.compute.amazonaws.com/';
 
@@ -39,7 +38,7 @@ router.post('/', function(req, res) {
           }
 
           if(updateFlag) {
-            // API call to self/machines/:machine_id to update inventory
+            // Updates this machine_id's inventory in DB
             fetch(SERVER_URL + 'machines/' + machine_id, {
               method: 'PUT',
               headers: {
@@ -63,9 +62,7 @@ router.post('/', function(req, res) {
 
             // With multiple machines, would index machine_id in a library of
             // machine_id to URL pairs.
-
             // For now, we direct ALL orders to the same machine, regardless of id
-
             fetch(PI_URL + 'order/', {
               method: 'POST',
               headers: {
@@ -83,8 +80,6 @@ router.post('/', function(req, res) {
       })
     }
   })
-
-  
 })
 
 module.exports = router;

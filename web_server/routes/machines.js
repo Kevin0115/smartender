@@ -32,6 +32,8 @@ router.post('/', function(req, res) {
 })
 
 // PI-TO-SERVER update the inventory of a machine (itself)
+// This should ONLY be used when drinks are being replaced
+// Intermediate inventory tracking is handled by the server itself
 router.put('/:machine_id', function(req, res) {
   var machine_id = req.params.machine_id;
   Machines.updateOne(
