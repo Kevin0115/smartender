@@ -1,14 +1,15 @@
 {
   "expo": {
     "name": "smartender",
-    "description": "This project is really great.",
+    "description": "Control a bartending robot that pours the perfect drink every time. An experience meant to integrate the drink ordering experience into one simple app.",
     "slug": "smartender",
+    "githubUrl": "https://github.com/Kevin0115/smartender",
     "privacy": "public",
     "sdkVersion": "31.0.0",
     "platforms": ["ios", "android"],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
+    "icon": "./assets/images/logotextsquare.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",

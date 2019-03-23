@@ -5,8 +5,8 @@ var mongoose = require('mongoose');
 var https = require('https');
 var http = require('http');
 var fs = require('fs');
-var privateKey  = fs.readFileSync('server.key', 'utf8');
-var certificate = fs.readFileSync('server.cert', 'utf8');
+var privateKey  = fs.readFileSync('./ssl/server.key', 'utf8');
+var certificate = fs.readFileSync('./ssl/server.cert', 'utf8');
 
 var orders = require('./routes/orders');
 var drinks = require('./routes/drinks');

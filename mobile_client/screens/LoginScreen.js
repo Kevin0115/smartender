@@ -58,11 +58,6 @@ export default class LoginScreen extends React.Component {
         const userResponse = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name`);
         const userResponseJson = (await userResponse.json());
         await AsyncStorage.setItem('fbUser', JSON.stringify(userResponseJson));
-        
-        // this._createUserDB({
-        //   ...userResponseJson,
-        //   groups: []
-        // });
 
         const picResponse = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=picture.type(large)`);
         const picResponseJson = (await picResponse.json()).picture.data.url;

@@ -19,6 +19,7 @@ export default class SettingsScreen extends React.Component {
     this.state = {
       userName: '',
       userPic: 'undefined',
+      drinkCount: 0,
     }
   }
 
@@ -27,11 +28,13 @@ export default class SettingsScreen extends React.Component {
   }
 
   _retrieveData = async () => {
+    const drinkCount = JSON.parse(await AsyncStorage.getItem('drinkCount'));
     const userData = JSON.parse(await AsyncStorage.getItem('fbUser'));
     const userPic = JSON.parse(await AsyncStorage.getItem('picUrl'))
     this.setState({
       userName: userData.name,
       userPic: userPic,
+      drinkCount: drinkCount
     });
   }
 
@@ -67,7 +70,7 @@ export default class SettingsScreen extends React.Component {
           </StyledText>
         </View>
         <StyledText style={{flex: 1, fontSize: 20}}>
-            Drink Responsibly!
+            Drinks Ordered: {this.state.drinkCount}
           </StyledText>
         <View style={{flex: 2}} />
         <View style={styles.buttonContainer}>

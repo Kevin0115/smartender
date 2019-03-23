@@ -26,6 +26,7 @@ export default class OrderScreen extends React.Component {
     }
     this._renderIndicator = this._renderIndicator.bind(this);
     this._renderMessage = this._renderMessage.bind(this);
+    this._updateDrinkCount = this._updateDrinkCount.bind(this);
   }
 
   componentDidMount() {
@@ -42,10 +43,28 @@ export default class OrderScreen extends React.Component {
     .then(res => res.json())
     // .then(json => console.log("\nYour Order:\n\n" + JSON.stringify(json)))
     .then(json => this.setState({status: json.status !== 'No Inventory'}))
+    .then(setTimeout(() => {
+      this._updateDrinkCount();
+    }, 2000))
+    // For drink counting purposes
     .catch(function(error) {
       console.log('Error: ' + error.message);
       throw error;
     });
+  }
+
+  _updateDrinkCount() {
+    console.log(this.state.status);
+    if (this.state.status) {
+      AsyncStorage.getItem('drinkCount')
+      .then(count => {
+        if (count !== null) {
+          AsyncStorage.setItem('drinkCount', JSON.stringify(++count));
+        } else {
+          AsyncStorage.setItem('drinkCount', JSON.stringify(1));
+        }
+      });
+    }
   }
 
   _renderIndicator() {
@@ -71,7 +90,7 @@ export default class OrderScreen extends React.Component {
           style={styles.check}              
         />
         <StyledText style={styles.confirm}>
-          Thank you!{'\n'}Your {this.state.orderInfo.name} will be poured shortly.
+          Thank you!{'\n'}Please see the smartender for instructions.
         </StyledText>
         <StyledButton
           buttonStyle={styles.button}
