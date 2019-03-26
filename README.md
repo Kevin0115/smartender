@@ -28,3 +28,10 @@ To get started with the React app you'll need to follow these steps
   ```npm start```
 
 4. The above step should've opened your browser to ```localhost:3000```. If not, you can open it yourself.
+
+
+## Pi server
+
+0. Install Flask package for pi, run ```sudo apt-get install python3-flask```
+
+1. Run ```flask_test_server.py``` (To test busy case uncomment line 98) 
