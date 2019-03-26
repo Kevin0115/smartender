@@ -71,7 +71,7 @@ export default class LoginScreen extends React.Component {
   _createUserDB = async (userJson) => {
     console.log(userJson);
     const userInfo = JSON.stringify(userJson);
-    fetch(BASE_URL + '/users', {
+    fetch(BASE_URL + 'users', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
