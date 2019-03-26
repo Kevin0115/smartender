@@ -16,7 +16,7 @@ class QuickCard extends Component {
     render() {
         const { classes, dataVal, dataKey } = this.props;
         return (
-            <Grid item xs={2}>
+            <Grid item xs={4} md={2}>
                 <Paper className={classes.paper} >
                     <Typography variant="h6">
                         {dataVal}

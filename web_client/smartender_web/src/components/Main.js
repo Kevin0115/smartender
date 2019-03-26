@@ -50,6 +50,9 @@ const styles = theme => ({
 
 const hostname = "http://ec2-13-58-113-143.us-east-2.compute.amazonaws.com/machines";
 
+// used to index table rows
+var id = 0;
+
 class Main extends Component {
 
     state = {
@@ -90,47 +93,69 @@ class Main extends Component {
 
     sumWeeklyLog = (data) => {
         var i;
-        var sum = 0;
+        var sum = {
+            drinkSum: 0,
+            revenueSum: 0
+        };
         for(i = 0; i < data.length; i++) {
-            sum += data[i].drinks;
+            sum.drinkSum += data[i].drinks;
+            sum.revenueSum += data[i].revenue;
         }
 
         return sum;
     }
 
     setStateSmartender = (data) => {
+
+        // variables used for refactoring smartender data
+        // refectored data used for double bar chart
         var smartenderData = data;
         var smartendersArr = [];
+
+        // variables used for QuickCard components
         var lifetimeDrinks = 0;
         var currentDrinks = 0;
         var totalSmartenders = 0;
         var bestSmartender = 0;
         var bestWeeklyLogSum = 0;
+        var lifetimeEarnings = 0;
+        var currentEarnings = 0;
 
         var j;
         for( j = 0; j < smartenderData.length; j++) {
+
+            // Get each smartender obj
             var smartenderObj = smartenderData[j];
 
-            // refactor smartender data
+            // If obj isn't undefined do some calculations and refactoring
             if(typeof(smartenderObj) !== 'undefined') {
                 var inventoryArr = smartenderObj.inventory;
+
+                /* Calculations for Quick Cards */
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 var drinksArr = smartenderObj.drinks;
                 var weeklyLog = smartenderObj.weekly_log;
                 var drinksThisWeek = smartenderObj.drinks_this_week;
+                var revenueThisWeek = smartenderObj.revenue_this_week;
 
                 var weeklyLogSum = this.sumWeeklyLog(weeklyLog);
 
-                if(weeklyLogSum > bestWeeklyLogSum) {
-                    bestWeeklyLogSum = weeklyLogSum;
+                if(weeklyLogSum.revenueSum > bestWeeklyLogSum) {
+                    bestWeeklyLogSum = weeklyLogSum.revenueSum;
                     bestSmartender = j; // change this to smartender id?
                 }
 
-                lifetimeDrinks += weeklyLogSum + drinksThisWeek;
+                lifetimeDrinks += weeklyLogSum.drinkSum + drinksThisWeek;
+                lifetimeEarnings += weeklyLogSum.revenueSum + revenueThisWeek;
                 currentDrinks += drinksThisWeek;
+                currentEarnings += revenueThisWeek;
                 totalSmartenders += 1;
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                /* End of calculations for Quick Cards */
     
+                /* Refactor smartender array */
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
                 var drinksInv = [];
-
                 if(inventoryArr.length !== 0 && drinksArr !== 0) {
                     var i;
                     for( i = 0; i < drinksArr.length; i++ ) {
@@ -139,12 +164,21 @@ class Main extends Component {
                         drinksInv.push(drinkObj);
                     }
                     smartenderObj.drinks = drinksInv;
-                    smartendersArr.push(smartenderObj);
                 }
+
+                // create data for smartender table
+                var smartenderTableRows = [
+                    this.createData('Drinks this Week', drinksThisWeek),
+                    this.createData('Revenue this Week', `$` + revenueThisWeek.toFixed(2)),
+                    this.createData('Lifetime Drinks', weeklyLogSum.drinkSum + drinksThisWeek),
+                    this.createData('Lifetime Revenue', `$` + (weeklyLogSum.revenueSum + revenueThisWeek).toFixed(2))
+                ];
+                smartenderObj.smartenderTableRows = smartenderTableRows;
+                smartendersArr.push(smartenderObj);
+            //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                /* End of refactoring for smartender array */
             }
 
-
-            
         }
 
         this.setState({
@@ -152,9 +186,16 @@ class Main extends Component {
             lifetimeDrinks: lifetimeDrinks,
             currentDrinks: currentDrinks,
             totalSmartenders: totalSmartenders,
-            bestSmartender: bestSmartender
+            bestSmartender: bestSmartender,
+            currentEarnings: `$` + currentEarnings.toFixed(2),
+            lifetimeEarnings: `$` + lifetimeEarnings.toFixed(2)
         });
         
+    }
+
+    createData = (name, details) => {
+        id += 1;
+        return { id, name, details };
     }
 
     render() {

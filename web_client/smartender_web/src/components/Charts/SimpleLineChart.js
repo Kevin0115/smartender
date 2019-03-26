@@ -13,7 +13,7 @@ import { withTheme } from '@material-ui/core/styles';
 const SimpleLineChart = (props) => {
     const { theme, data } = props;
     return (
-        <ResponsiveContainer width="99%" height={225}>
+        <ResponsiveContainer width="99%" height="100%" minHeight={255}>
             <AreaChart data={data} margin={{top: 24, right: 24}}>
                 <defs>
                     <linearGradient id="colorDrinks" x1="0" y1="0" x2="0" y2="1">
