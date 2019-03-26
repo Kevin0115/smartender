@@ -47,6 +47,12 @@ export default class LoginScreen extends React.Component {
         // Only for Guest Login Usage
         await AsyncStorage.setItem('isGuest', JSON.stringify(false));
 
+        this._createUserDB({
+          username: userResponseJson.name,
+          id: userResponseJson.id,
+          pic: picResponseJson
+        });
+
         this.props.navigation.navigate('Main');
       }
     } catch (err) {
@@ -60,6 +66,23 @@ export default class LoginScreen extends React.Component {
     // Only for Guest Login Usage
     await AsyncStorage.setItem('isGuest', JSON.stringify(true));
     this.props.navigation.navigate('Main');
+  }
+
+  _createUserDB = async (userJson) => {
+    const userInfo = JSON.stringify(userJson);
+    fetch(BASE_URL + '/users', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: userInfo,
+    })
+    .then(res => res.json())
+    .then(json => console.log(json))
+    .catch(function(error) {
+      console.log('Error: ' + error.message);
+      throw error;
+    });
   }
 
   render () {

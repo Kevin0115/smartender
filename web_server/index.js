@@ -11,6 +11,7 @@ var certificate = fs.readFileSync('./ssl/server.cert', 'utf8');
 var orders = require('./routes/orders');
 var drinks = require('./routes/drinks');
 var machines = require('./routes/machines');
+var users = require('./routes/users');
 
 // Declare application parameters
 var HTTP_PORT = 80;
@@ -24,11 +25,13 @@ require('./config/configuration.js')(app, mongoose);
 Orders = require('./models/Orders.js');
 Drinks = require('./models/Drinks.js');
 Machines = require('./models/Machines.js');
+Users = require('./models/Users.js');
 
 // Routes
 app.use('/orders', orders);
 app.use('/drinks', drinks);
 app.use('/machines', machines);
+app.use('/users', users);
 
 // Server
 // app.listen(PORT, function(){
