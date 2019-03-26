@@ -34,7 +34,8 @@ router.post('/', function(req, res) {
 // PI-TO-SERVER update the inventory of a machine (itself)
 // This should ONLY be used when drinks are being replaced
 // Intermediate inventory tracking is handled by the server itself
-router.put('/:machine_id', function(req, res) {
+router.put('/:machine_id/inventory', function(req, res) {
+  console.log(req.body);
   var machine_id = req.params.machine_id;
   Machines.updateOne(
     {machine_id: machine_id},
@@ -45,6 +46,23 @@ router.put('/:machine_id', function(req, res) {
       res.send({status: 'Error'});
     } else {
       res.send({status: 'Inventory Updated'});
+    }
+  })
+})
+
+
+router.put('/:machine_id/data', function(req, res) {
+  var machine_id = req.params.machine_id;
+  var revenue = req.body.revenue;
+  Machines.updateOne(
+    {machine_id: machine_id},
+    {$inc: {drinks_this_week: 1, revenue_this_week: revenue}}
+  )
+  .exec(function(err, machine) {
+    if(err) {
+      res.send({status: 'Error'});
+    } else {
+      res.send({status: 'Stats Updated'});
     }
   })
 })

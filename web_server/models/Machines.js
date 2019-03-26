@@ -6,6 +6,7 @@ var MachineSChema = mongoose.Schema({
   inventory: [Number],
   drinks: [Object],
   drinks_this_week: Number,
+  revenue_this_week: Number,
   weekly_log: [Object],
 })
 

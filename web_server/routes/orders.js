@@ -10,6 +10,7 @@ router.post('/', function(req, res) {
   var username = req.body.username;
   var drink_id = req.body.drink_id;
   var name = req.body.name;
+  var price = req.body.price;
   var recipe = [];
   var currInventory = [];
   var newInventory = [];
@@ -37,12 +38,24 @@ router.post('/', function(req, res) {
 
           if(updateFlag) {
             // Updates this machine_id's inventory in DB
-            fetch(constants.SERVER_URL + 'machines/' + machine_id, {
+            fetch(constants.SERVER_URL + 'machines/' + machine_id + '/inventory', {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json'
               },
               body: JSON.stringify({inventory: newInventory}),
+            })
+            .then(res => console.log(res))
+            .then(json => console.log(json))
+            .catch(error => console.log('Error: ' + error.message));
+
+            // Update the analytics data
+            fetch(constants.SERVER_URL + 'machines/' + machine_id + '/data', {
+              method: 'PUT',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify({revenue: price}),
             })
             .then(res => res.json())
             .then(json => console.log(json))
