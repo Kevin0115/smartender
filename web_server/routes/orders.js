@@ -45,7 +45,7 @@ router.post('/', function(req, res) {
               },
               body: JSON.stringify({inventory: newInventory}),
             })
-            .then(res => console.log(res))
+            .then(res => res.json())
             .then(json => console.log(json))
             .catch(error => console.log('Error: ' + error.message));
 
