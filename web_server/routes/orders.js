@@ -74,7 +74,7 @@ router.post('/', function(req, res) {
             // With multiple machines, would index machine_id in a library of
             // machine_id to URL pairs.
             // For now, we direct ALL orders to the same machine, regardless of id
-            fetch(constants.PI_URL + '/order/', {
+            fetch(constants.PI_URL + '/order', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
