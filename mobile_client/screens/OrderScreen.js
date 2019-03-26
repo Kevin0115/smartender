@@ -33,7 +33,7 @@ export default class OrderScreen extends React.Component {
     setTimeout(() => {
       this.setState({response: true});
     }, 2000)
-    fetch(BASE_URL + 'orders', {
+    fetch(BASE_URL + '/orders', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
