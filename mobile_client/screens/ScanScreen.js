@@ -80,7 +80,8 @@ export default class ScanScreen extends React.Component {
       machine_id: this.state.id,
       drink_id: this.state.orderInfo.drinkId,
       shots: this.state.orderInfo.shots,
-      name: this.state.orderInfo.name
+      name: this.state.orderInfo.name,
+      price: this.state.orderInfo.price
     }
     if (this.state.id) {
       this.props.navigation.navigate('Order', {orderInfo: orderInfo});

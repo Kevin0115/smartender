@@ -1,7 +1,7 @@
 export default [
   {
     
-    drinkId: 0,drinkId: 0,
+    drinkId: 0,
     name: 'Gin and Tonic',
     price: 7.50,
     ingredients: ['Gin', 'Tonic Water', 'Lime'],

@@ -11,6 +11,7 @@ import {
   AsyncStorage
 } from 'react-native';
 import { StyledButton, StyledText, StyledScreen } from '../components/StyledElements';
+import { APP_ID, BASE_URL } from '../constants/Auth';
 import Colors from '../constants/Colors';
 
 export default class SettingsScreen extends React.Component {
@@ -29,15 +30,24 @@ export default class SettingsScreen extends React.Component {
   }
 
   _retrieveData = async () => {
-    const drinkCount = JSON.parse(await AsyncStorage.getItem('drinkCount'));
     const userData = JSON.parse(await AsyncStorage.getItem('fbUser'));
     const userPic = JSON.parse(await AsyncStorage.getItem('picUrl'));
     const isGuest = JSON.parse(await AsyncStorage.getItem('isGuest'));
+
+    fetch(BASE_URL + '/users/' + userData.id, {
+      method: 'GET',
+    })
+    .then(res => res.json())
+    .then(json => this.setState({drinkCount: json.drink_count}))
+    .catch(function(error) {
+      console.log('Error: ' + error.message);
+      throw error;
+    });
+
     this.setState({
       userName: userData.name,
       userPic: userPic,
       isGuest: isGuest,
-      drinkCount: drinkCount
     });
   }
 

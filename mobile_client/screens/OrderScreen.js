@@ -30,6 +30,7 @@ export default class OrderScreen extends React.Component {
   }
 
   componentDidMount() {
+    console.log(this.state.orderInfo);
     setTimeout(() => {
       this.setState({response: true});
     }, 2000)
@@ -53,18 +54,23 @@ export default class OrderScreen extends React.Component {
     });
   }
 
-  _updateDrinkCount() {
-    console.log(this.state.status);
-    if (this.state.status) {
-      AsyncStorage.getItem('drinkCount')
-      .then(count => {
-        if (count !== null) {
-          AsyncStorage.setItem('drinkCount', JSON.stringify(++count));
-        } else {
-          AsyncStorage.setItem('drinkCount', JSON.stringify(1));
-        }
-      });
-    }
+  async _updateDrinkCount() {
+    const userData = JSON.parse(await AsyncStorage.getItem('fbUser'));
+
+    fetch(BASE_URL + '/users/' + userData.id + '/drinks', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      // This might change if we allow multiple drink orders at once
+      body: JSON.stringify({drinks: 1}),
+    })
+    .then(res => res.json())
+    .then(json => console.log(json))
+    .catch(function(error) {
+      console.log('Error: ' + error.message);
+      throw error;
+    });
   }
 
   _renderIndicator() {
