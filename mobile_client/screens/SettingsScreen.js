@@ -21,7 +21,7 @@ export default class SettingsScreen extends React.Component {
       userName: '',
       userPic: 'undefined',
       isGuest: true,
-      drinkCount: 0
+      drinkCount: "  "
     }
   }
 
