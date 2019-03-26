@@ -39,7 +39,7 @@ router.get('/:user_id', function(req, res) {
     if (user == undefined) {
       res.send({status: 'User Does Not Exist'});
     } else {
-      res.send(user);
+      res.send({status: 'OK'});
     }
   })
 })
