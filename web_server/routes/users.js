@@ -16,12 +16,14 @@ router.get('/', function(req, res) {
 
 // Initialize new user
 router.post('/', function(req, res) {
+  console.log(req.body);
   Users.create({
     username: req.body.username,
     id: req.body.id,
     pic: req.body.pic,
     drink_count: 0,
   }, function(err, user) {
+    console.log(user);
     if(err) {
       res.send({status: 'Error'});
     } else {
@@ -35,11 +37,10 @@ router.get('/:user_id', function(req, res) {
   var user_id = req.params.user_id;
   Users.findOne({id: user_id})
   .exec(function(err, user) {
-    console.log(user);
     if (user == undefined) {
       res.send({status: 'User Does Not Exist'});
     } else {
-      res.send({status: 'OK'});
+      res.send(user);
     }
   })
 })
