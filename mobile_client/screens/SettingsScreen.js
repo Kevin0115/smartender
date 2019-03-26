@@ -39,9 +39,6 @@ export default class SettingsScreen extends React.Component {
       isGuest: isGuest,
       drinkCount: drinkCount
     });
-    console.log(userData);
-    console.log(userPic);
-    console.log(isGuest);
   }
 
   _logOut = async () => {
@@ -131,11 +128,13 @@ const styles = StyleSheet.create({
     flex: 0.8,
   },
   logoutButton: {
-    width: 200,
+    width: 254,
+    height: 56,
     backgroundColor: '#ce4848',
   },
   cancelButton: {
-    width: 200,
+    width: 254,
+    height: 56,
   },
   buttonTitle: {
     color: 'white',

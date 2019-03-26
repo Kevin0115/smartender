@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "smartender",
-    "description": "Control a bartending robot that pours the perfect drink every time. An experience meant to integrate the drink ordering experience into one simple app.",
+    "description": "Control a bartending robot that pours the perfect drink every time. An experience meant to integrate the drink ordering experience into one simple app. [UI Optimized for iOS]",
     "slug": "smartender",
     "githubUrl": "https://github.com/Kevin0115/smartender",
     "privacy": "public",

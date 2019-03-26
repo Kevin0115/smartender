@@ -112,7 +112,7 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
   },
   logoContainer: {
-    flex: 4,
+    flex: 4.5,
     alignItems: 'center',
     justifyContent: 'center',
   },
@@ -121,7 +121,7 @@ const styles = StyleSheet.create({
     height: 178,
   },
   buttonSection: {
-    flex: 2,
+    flex: 1.5,
     alignItems: 'center',
     justifyContent: 'center',
   },
