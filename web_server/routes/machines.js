@@ -35,7 +35,6 @@ router.post('/', function(req, res) {
 // This should ONLY be used when drinks are being replaced
 // Intermediate inventory tracking is handled by the server itself
 router.put('/:machine_id/inventory', function(req, res) {
-  console.log(req.body);
   var machine_id = req.params.machine_id;
   Machines.updateOne(
     {machine_id: machine_id},

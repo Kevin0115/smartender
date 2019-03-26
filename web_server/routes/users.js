@@ -19,7 +19,6 @@ router.post('/', function(req, res) {
   var user_id = req.body.id;
   Users.findOne({id: user_id})
   .exec(function(err, user) {
-    console.log(user);
     // If user doesn't already exist, insert
     if (user == undefined) {
       Users.create({
