@@ -19,7 +19,8 @@ export default class SettingsScreen extends React.Component {
     this.state = {
       userName: '',
       userPic: 'undefined',
-      drinkCount: 0,
+      isGuest: true,
+      drinkCount: 0
     }
   }
 
@@ -30,12 +31,17 @@ export default class SettingsScreen extends React.Component {
   _retrieveData = async () => {
     const drinkCount = JSON.parse(await AsyncStorage.getItem('drinkCount'));
     const userData = JSON.parse(await AsyncStorage.getItem('fbUser'));
-    const userPic = JSON.parse(await AsyncStorage.getItem('picUrl'))
+    const userPic = JSON.parse(await AsyncStorage.getItem('picUrl'));
+    const isGuest = JSON.parse(await AsyncStorage.getItem('isGuest'));
     this.setState({
       userName: userData.name,
       userPic: userPic,
+      isGuest: isGuest,
       drinkCount: drinkCount
     });
+    console.log(userData);
+    console.log(userPic);
+    console.log(isGuest);
   }
 
   _logOut = async () => {
@@ -61,7 +67,12 @@ export default class SettingsScreen extends React.Component {
         <View style={styles.profilePicContainer}>
           <Image
             style={styles.profilePic}
-            source={{uri: this.state.userPic}}
+            source={
+              this.state.isGuest ? 
+              require('../assets/images/guest.png')
+              :
+              {uri: this.state.userPic}
+            }
           />
         </View>
         <View style={styles.nameContainer}>
@@ -69,9 +80,13 @@ export default class SettingsScreen extends React.Component {
             {this.state.userName}
           </StyledText>
         </View>
-        <StyledText style={{flex: 1, fontSize: 20}}>
+        {
+          this.state.isGuest ?
+          <View style={{flex: 1}} />
+          :
+          <StyledText style={{flex: 1, fontSize: 20}}>
             Drinks Ordered: {this.state.drinkCount}
-          </StyledText>
+          </StyledText>}
         <View style={{flex: 2}} />
         <View style={styles.buttonContainer}>
           <StyledButton

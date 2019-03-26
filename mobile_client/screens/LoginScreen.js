@@ -13,38 +13,17 @@ import { APP_ID, BASE_URL } from '../constants/Auth';
 export default class LoginScreen extends React.Component {
   constructor(props) {
     super(props);
+    this.state = {
+      isModalVisible: false,
+      modalImage: require('../assets/images/error.png'),
+      modalTitleText: 'We could not log you in',
+      modalBodyText: 'Something went wrong.'
+    }
   }
-
-  state = {
-    isModalVisible: false,
-    modalImage: require('../assets/images/error.png'),
-    modalTitleText: 'We could not log you in',
-    modalBodyText: 'Something went wrong.'
-  };
 
   static navigationOptions = {
     header: null,
   };
-
-  // _createUserDB = async (userJson) => {
-  //   const userInfo = JSON.stringify(userJson);
-  //   fetch(BASE_URL + '/users/create', {
-  //     method: 'POST',
-  //     headers: {
-  //       'Content-Type': 'application/json'
-  //     },
-  //     body: userInfo,
-  //   }).then((res) => res.json())
-  //   .then((response) => {
-  //     if (response.error) {
-  //       console.warn("Error!", response.error);
-  //     }
-  //     console.log(response);
-  //   })
-  //   .catch((error) => {
-  //     console.warn('Error: ', error);
-  //   });
-  // }
 
   async logIn() {
     const options = {
@@ -55,19 +34,32 @@ export default class LoginScreen extends React.Component {
       const {type, token} = await Expo.Facebook.logInWithReadPermissionsAsync(APP_ID, options);
       if (type === 'success') {
         const loginBody = JSON.stringify({'fb_token': token.toString()});
+        // Store the User's Name
         const userResponse = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=id,name`);
         const userResponseJson = (await userResponse.json());
         await AsyncStorage.setItem('fbUser', JSON.stringify(userResponseJson));
 
+        // Store the User's Photo URL
         const picResponse = await fetch(`https://graph.facebook.com/me?access_token=${token}&fields=picture.type(large)`);
         const picResponseJson = (await picResponse.json()).picture.data.url;
         await AsyncStorage.setItem('picUrl', JSON.stringify(picResponseJson));
+        
+        // Only for Guest Login Usage
+        await AsyncStorage.setItem('isGuest', JSON.stringify(false));
 
         this.props.navigation.navigate('Main');
       }
     } catch (err) {
       console.log('Error: ', err);
     }
+  }
+
+  async guestLogin() {
+    await AsyncStorage.setItem('fbUser', JSON.stringify({name: 'Guest'}));
+    await AsyncStorage.setItem('picUrl', JSON.stringify('../assets/images/guest.png'));
+    // Only for Guest Login Usage
+    await AsyncStorage.setItem('isGuest', JSON.stringify(true));
+    this.props.navigation.navigate('Main');
   }
 
   render () {
@@ -80,22 +72,33 @@ export default class LoginScreen extends React.Component {
               style={styles.logoPlaceholder}
             />
         </View>
-        <View style={styles.buttonContainer}>
-          <Button
-            title="Login with Facebook"
-            onPress={() => this.logIn()}
-            buttonStyle={styles.button}
-            titleStyle={styles.buttonTitle}
-            raised={true}
-            icon={
-              <Icon
-                name='logo-facebook'
-                type='ionicon'
-                size={50}
-                color='white'
-              />
-            }
-          />
+        <View style={styles.buttonSection}>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Login with Facebook"
+              onPress={() => this.logIn()}
+              buttonStyle={styles.fbLogin}
+              titleStyle={styles.buttonTitle}
+              raised={true}
+              icon={
+                <Icon
+                  name='logo-facebook'
+                  type='ionicon'
+                  size={50}
+                  color='white'
+                />
+              }
+            />
+          </View>
+          <View style={styles.buttonContainer}>
+            <Button
+              title="Continue as Guest"
+              onPress={() => this.guestLogin()}
+              buttonStyle={styles.guestLogin}
+              titleStyle={styles.buttonTitle}
+              raised={true}
+            />
+          </View>
         </View>
       </View>
     );
@@ -109,25 +112,33 @@ const styles = StyleSheet.create({
     alignItems: 'stretch',
   },
   logoContainer: {
-    flex: 5,
+    flex: 4,
     alignItems: 'center',
     justifyContent: 'center',
   },
   logoPlaceholder: {
-    // opacity: 0.6,
     width: 204,
     height: 178,
   },
-  buttonContainer: {
-    flex: 1,
+  buttonSection: {
+    flex: 2,
     alignItems: 'center',
     justifyContent: 'center',
   },
-  button: {
+  buttonContainer: {
+    marginBottom: 10,
+  },
+  fbLogin: {
     backgroundColor: '#3b4998',
     width: 254,
     height: 56,
     paddingTop: 2,
+    borderRadius: 6,
+  },
+  guestLogin: {
+    backgroundColor: '#c2c2c2',
+    width: 254,
+    height: 56,
     borderRadius: 6,
   },
   buttonTitle: {
