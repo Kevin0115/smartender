@@ -35,6 +35,7 @@ router.get('/:user_id', function(req, res) {
   var user_id = req.params.user_id;
   Users.findOne({id: user_id})
   .exec(function(err, user) {
+    console.log(user);
     if (user == undefined) {
       res.send({status: 'User Does Not Exist'});
     } else {
