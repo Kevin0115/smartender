@@ -38,7 +38,7 @@ router.post('/', function(req, res) {
 
           if(updateFlag) {
             // Updates this machine_id's inventory in DB
-            fetch(constants.SERVER_URL + 'machines/' + machine_id + '/inventory', {
+            fetch(constants.SERVER_URL + '/machines/' + machine_id + '/inventory', {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json'
@@ -50,7 +50,7 @@ router.post('/', function(req, res) {
             .catch(error => console.log('Error: ' + error.message));
 
             // Update the analytics data
-            fetch(constants.SERVER_URL + 'machines/' + machine_id + '/data', {
+            fetch(constants.SERVER_URL + '/machines/' + machine_id + '/data', {
               method: 'PUT',
               headers: {
                 'Content-Type': 'application/json'
@@ -74,16 +74,16 @@ router.post('/', function(req, res) {
             // With multiple machines, would index machine_id in a library of
             // machine_id to URL pairs.
             // For now, we direct ALL orders to the same machine, regardless of id
-            // fetch(constants.PI_URL + 'order/', {
-            //   method: 'POST',
-            //   headers: {
-            //     'Content-Type': 'application/json'
-            //   },
-            //   body: JSON.stringify(order),
-            // })
-            // .then(res => res.json())
-            // .then(json => res.send(json))
-            // .catch(error => console.log('Error: ' + error.message));
+            fetch(constants.PI_URL + '/order/', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json'
+              },
+              body: JSON.stringify(order),
+            })
+            .then(res => res.json())
+            .then(json => res.send(json))
+            .catch(error => console.log('Error: ' + error.message));
           } else {
             res.send({status: 'No Inventory'});
           }

@@ -55,4 +55,21 @@ router.get('/:user_id', function(req, res) {
   })
 })
 
+// Increment User Drink Count
+router.put('/:user_id/drinks', function(req, res) {
+  var user_id = req.params.user_id;
+  var drinks = req.body.drinks;
+  Users.updateOne(
+    {id: user_id},
+    {$inc: {drink_count: drinks}}
+  )
+  .exec(function(err, user) {
+    if(err) {
+      res.send({status: 'Error'});
+    } else {
+      res.send({status: 'Drink Count Updated'});
+    }
+  })
+})
+
 module.exports = router;
