@@ -14,7 +14,8 @@ import ListItemText from '@material-ui/core/ListItemText';
 import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 import Menu from './Menu';
 
-const logo = require('../../images/logo.svg');
+// const logo = require('../../images/logo.svg');
+const smartenderLogo = require('../../images/favicon.ico');
 
 const styles = theme => ({
     appBar: {
@@ -117,7 +118,7 @@ class Topbar extends Component {
                         <Grid item xs={12} className={classes.flex}>
                             <div className={classes.inline}>
                                 <Typography variant="h6" color="inherit" noWrap>
-                                    <img width={20} src={logo} alt="" />
+                                    <img width={20} src={smartenderLogo} alt="" />
                                     <span className={classes.tagline}>Smartender</span>
                                 </Typography>
                             </div>
