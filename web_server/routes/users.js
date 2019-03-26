@@ -16,14 +16,12 @@ router.get('/', function(req, res) {
 
 // Initialize new user
 router.post('/', function(req, res) {
-  console.log(req.body);
   Users.create({
     username: req.body.username,
     id: req.body.id,
     pic: req.body.pic,
     drink_count: 0,
   }, function(err, user) {
-    console.log(user);
     if(err) {
       res.send({status: 'Error'});
     } else {
