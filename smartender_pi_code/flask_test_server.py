@@ -39,9 +39,9 @@ def order():
         global lock
         global in_use
         
-        lock.acquire()
-        in_use = True
-        lock.release()
+        # lock.acquire()
+        # in_use = True
+        # lock.release()
         input_json = request.get_json(force=True)
         name = input_json['username']
         order = input_json['order']
