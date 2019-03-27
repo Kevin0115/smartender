@@ -2,14 +2,9 @@ import React from 'react';
 import {
   Image,
   Platform,
-  ScrollView,
-  Text,
   StyleSheet,
-  TouchableOpacity,
   View,
   FlatList,
-  Alert,
-  AsyncStorage
 } from 'react-native';
 import { StyledButton, StyledText, StyledScreen } from '../components/StyledElements';
 

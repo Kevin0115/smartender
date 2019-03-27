@@ -1,20 +1,14 @@
 import React from 'react';
 import {
   Image,
-  Platform,
-  ScrollView,
   Text,
   StyleSheet,
-  TouchableOpacity,
   View,
-  FlatList,
   Alert,
   AsyncStorage
 } from 'react-native';
 import { Camera, Permissions, BarCodeScanner } from 'expo';
 import { StyledButton, StyledText, StyledScreen } from '../components/StyledElements';
-
-import Success from '../assets/images/success.png';
 
 export default class ScanScreen extends React.Component {
   constructor(props) {
@@ -24,10 +18,14 @@ export default class ScanScreen extends React.Component {
       hasCameraPermission: null,
       type: Camera.Constants.Type.back,
       focus: Camera.Constants.AutoFocus.on,
-      // Other
+
+      // QR Scanner
       id: null,
+      message: 'No Smartender Scanned',
+
+      // Order Info
       orderInfo: this.props.navigation.getParam('orderInfo'),
-      username: '',
+      username: ''
     }
     this._scanCode = this._scanCode.bind(this);
     this._handleOrder = this._handleOrder.bind(this);
@@ -49,24 +47,14 @@ export default class ScanScreen extends React.Component {
     try {
       var qr = JSON.parse(arg.data);
       if (qr.smartender_id != null || qr.smartender_id != undefined) {
-        this.setState({id: qr.smartender_id});
+        this.setState({
+          id: qr.smartender_id,
+          message: 'Smartender #' + qr.smartender_id + ' Scanned'
+        });
       }
     } catch (e) {
       console.log('Not a Smartender ID');
     }
-  }
-
-  _renderID() {
-    return (
-      this.state.id == null ?
-      <StyledText style={styles.instructions}>
-        No Smartender Scanned
-      </StyledText>
-      :
-      <StyledText style={styles.instructions}>
-        Scanned Smartender #{this.state.id}
-      </StyledText>
-    );
   }
 
   _renderCheck() {
@@ -120,7 +108,9 @@ export default class ScanScreen extends React.Component {
               {this._renderCheck()}
             </BarCodeScanner>
           </View>
-          {this._renderID()}
+          <StyledText style={styles.instructions}>
+            {this.state.message}
+          </StyledText>
           <View style={styles.buttonContainer}>
             <StyledButton
               buttonStyle={styles.button}

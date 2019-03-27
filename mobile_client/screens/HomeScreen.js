@@ -1,15 +1,7 @@
 import React from 'react';
 import {
-  Image,
-  Platform,
-  ScrollView,
   StyleSheet,
-  TouchableOpacity,
-  View,
   FlatList,
-  Text,
-  Alert,
-  AsyncStorage
 } from 'react-native';
 import { StyledButton, StyledText, StyledScreen } from '../components/StyledElements';
 import DrinkCard from '../components/DrinkCard';

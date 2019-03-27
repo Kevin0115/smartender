@@ -3,10 +3,8 @@ import {
   AsyncStorage,
   Image,
   StyleSheet,
-  Text,
   View,
 } from "react-native";
-import { Font } from 'expo';
 import { Button, Icon } from "react-native-elements";
 import { APP_ID, BASE_URL } from '../constants/Auth';
 

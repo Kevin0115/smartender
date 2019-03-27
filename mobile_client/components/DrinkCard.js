@@ -1,10 +1,7 @@
 import React from 'react';
 import {
   Image,
-  AsyncStorage,
-  Text,
   Platform,
-  ScrollView,
   StyleSheet,
   TouchableOpacity,
   View,

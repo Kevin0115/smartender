@@ -1,5 +1,5 @@
 import React from 'react';
-import { AsyncStorage, Alert, TouchableOpacity } from 'react-native';
+import { TouchableOpacity } from 'react-native';
 import { Icon } from 'react-native-elements';
 import { withNavigation } from 'react-navigation';
 
