@@ -35,24 +35,24 @@ def inventory():
 def order():
     global drinks
     
-    # if in_use == False:
-    #     global lock
-    #     global in_use
+    if in_use == False:
+        global lock
+        global in_use
         
-    #     lock.acquire()
-    #     in_use = True
-    #     lock.release()
-    #     input_json = request.get_json(force=True)
-    #     name = input_json['username']
-    #     order = input_json['order']
+        lock.acquire()
+        in_use = True
+        lock.release()
+        input_json = request.get_json(force=True)
+        name = input_json['username']
+        order = input_json['order']
         
-    #     if len(order) > 0:
-    #         update_inventory(order)
-    #         Thread(target=pour_drinks, args=(name, order,)).start()
+        if len(order) > 0:
+            update_inventory(order)
+            Thread(target=pour_drinks, args=(name, order,)).start()
             
-    #     dictToReturn = {'busy':False,'drinks':drinks}
+        dictToReturn = {'busy':False,'drinks':drinks}
     
-    # else:
+    else:
         dictToReturn = {'busy':False,'drinks':drinks}
     return jsonify(dictToReturn)
 
