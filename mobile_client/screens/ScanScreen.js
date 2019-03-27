@@ -46,7 +46,14 @@ export default class ScanScreen extends React.Component {
   }
 
   _scanCode(arg) {
-    this.setState({id: arg.data});
+    try {
+      var qr = JSON.parse(arg.data);
+      if (qr.smartender_id != null || qr.smartender_id != undefined) {
+        this.setState({id: qr.smartender_id});
+      }
+    } catch (e) {
+      console.log('Not a Smartender ID');
+    }
   }
 
   _renderID() {
