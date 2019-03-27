@@ -40,7 +40,7 @@ def order():
         global in_use
         
         lock.acquire()
-        in_use = False
+        in_use = True
         lock.release()
         input_json = request.get_json(force=True)
         name = input_json['username']
