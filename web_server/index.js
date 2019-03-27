@@ -34,10 +34,6 @@ app.use('/machines', machines);
 app.use('/users', users);
 
 // Server
-// app.listen(PORT, function(){
-//   console.log('[Express.js] Server listening on PORT: '+ PORT);
-// });
-
 var httpServer = http.createServer(app);
 var httpsServer = https.createServer(credentials, app);
 
