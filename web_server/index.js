@@ -14,8 +14,8 @@ var machines = require('./routes/machines');
 var users = require('./routes/users');
 
 // Declare application parameters
-var HTTP_PORT = 80;
-var HTTPS_PORT = 443;
+var HTTP_PORT = 8000;
+var HTTPS_PORT = 8443;
 var credentials = {key: privateKey, cert: certificate};
 
 // Configure
