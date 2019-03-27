@@ -53,7 +53,7 @@ def order():
     #     dictToReturn = {'busy':False,'drinks':drinks}
     
     # else:
-        dictToReturn = {'busy':False,'drinks':drinks}
+    dictToReturn = {'busy':False,'drinks':drinks}
     return jsonify(dictToReturn)
 
 def display_on_lcd(message):
