@@ -36,7 +36,7 @@ export default class OrderScreen extends React.Component {
     })
     .then(res => res.json())
     .then(json => {
-      this.setState({status: json.status !== 'No Inventory'});
+      this.setState({status: json.status !== 'No Inventory' && json.busy === false});
       console.log(json);
     })
     .then(setTimeout(() => {
@@ -106,7 +106,7 @@ export default class OrderScreen extends React.Component {
           style={styles.check}              
         />
         <StyledText style={styles.confirm}>
-          We're sorry, we're currently out of this drink. Please try again later.
+          We're sorry, we couldn't complete your order. Please try again later.
         </StyledText>
         <StyledButton
           buttonStyle={styles.button}
