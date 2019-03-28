@@ -11,6 +11,7 @@ router.post('/', function(req, res) {
   var drink_id = req.body.drink_id;
   var name = req.body.name;
   var price = req.body.price;
+  var shots = req.body.shots;
   var recipe = [];
   var currInventory = [];
   var newInventory = [];
@@ -27,7 +28,8 @@ router.post('/', function(req, res) {
         if (err || drink == undefined) {
           res.send({status: 'Error'});
         } else {
-          recipe = drink.recipe;
+          // We need to adjust the recipe according to shots
+          recipe = utils.updateRecipe(drink.recipe, shots);
           try {
             newInventory = utils.updateInventory(currInventory, recipe);
           }
@@ -76,7 +78,6 @@ router.post('/', function(req, res) {
             var PI_URL = constants.PI_URL_DICT[machine_id];
             // For Testing, use this
             var TEST_PI_URL = constants.TEST_PI_URL;
-            console.log(TEST_PI_URL);
 
             fetch(TEST_PI_URL + '/order', {
               method: 'POST',
