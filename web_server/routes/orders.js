@@ -71,10 +71,14 @@ router.post('/', function(req, res) {
               ]
             }
 
-            // With multiple machines, would index machine_id in a library of
-            // machine_id to URL pairs.
-            // For now, we direct ALL orders to the same machine, regardless of id
-            fetch(constants.PI_URL + '/order', {
+            // Index the machine dict by machine_id to get proper URL
+            // Right now they're all the same. Theoretically each would be its own URL
+            var PI_URL = constants.PI_URL_DICT[machine_id];
+            // For Testing, use this
+            var TEST_PI_URL = constants.TEST_PI_URL;
+            console.log(TEST_PI_URL);
+
+            fetch(TEST_PI_URL + '/order', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'
@@ -82,7 +86,10 @@ router.post('/', function(req, res) {
               body: JSON.stringify(order),
             })
             .then(res => res.json())
-            .then(json => res.send(json))
+            .then(json => {
+              console.log(json);
+              res.send(json);
+            })
             .catch(error => console.log('Error: ' + error.message));
           } else {
             res.send({status: 'No Inventory'});
