@@ -31,8 +31,7 @@ router.post('/', function(req, res) {
   })
 })
 
-// PI-TO-SERVER update the inventory of a machine (itself)
-// This should ONLY be used when drinks are being replaced
+// PI-TO-SERVER - Update the inventory of a machine (itself)
 // Intermediate inventory tracking is handled by the server itself
 router.put('/:machine_id/inventory', function(req, res) {
   var machine_id = req.params.machine_id;
@@ -49,7 +48,8 @@ router.put('/:machine_id/inventory', function(req, res) {
   })
 })
 
-
+// INTERNAL SERVER - During an /order request, if successful,
+// analytics data (revenue and num_drinks) are updated
 router.put('/:machine_id/data', function(req, res) {
   var machine_id = req.params.machine_id;
   var revenue = req.body.revenue;
