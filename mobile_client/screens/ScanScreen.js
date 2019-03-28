@@ -78,7 +78,7 @@ export default class ScanScreen extends React.Component {
       name: this.state.orderInfo.name,
       price: this.state.orderInfo.price
     }
-    if (this.state.id) {
+    if (typeof this.state.id === 'number') {
       this.props.navigation.navigate('Order', {orderInfo: orderInfo});
     } else {
       Alert.alert('Please Scan a Smartender before Proceeding!')

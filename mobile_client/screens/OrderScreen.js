@@ -24,7 +24,6 @@ export default class OrderScreen extends React.Component {
   }
 
   componentDidMount() {
-    console.log(this.state.orderInfo);
     setTimeout(() => {
       this.setState({response: true});
     }, 2000)
@@ -36,8 +35,10 @@ export default class OrderScreen extends React.Component {
       body: JSON.stringify(this.props.navigation.getParam('orderInfo'))
     })
     .then(res => res.json())
-    // .then(json => console.log("\nYour Order:\n\n" + JSON.stringify(json)))
-    .then(json => this.setState({status: json.status !== 'No Inventory'}))
+    .then(json => {
+      this.setState({status: json.status !== 'No Inventory'});
+      console.log(json);
+    })
     .then(setTimeout(() => {
       this._updateDrinkCount();
     }, 2000))
