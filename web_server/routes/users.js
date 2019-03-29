@@ -26,6 +26,7 @@ router.post('/', function(req, res) {
         id: req.body.id,
         pic: req.body.pic,
         drink_count: 0,
+        balance: 0,
       }, function(err, user) {
         if(err) {
           res.send({status: 'Error'});

@@ -114,7 +114,7 @@ export default class ScanScreen extends React.Component {
           <View style={styles.buttonContainer}>
             <StyledButton
               buttonStyle={styles.button}
-              title='Order'
+              title={'Order - $' + this.state.orderInfo.price.toFixed(2)}
               onPress={this._handleOrder}
             />
           </View>
@@ -143,7 +143,8 @@ const styles = StyleSheet.create({
   },
   button: {
     backgroundColor: '#53c16d',
-    width: 200,
+    width: 254,
+    height: 56,
   },
   check: {
     width: 100,

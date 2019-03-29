@@ -13,7 +13,7 @@ export default class DrinkScreen extends React.Component {
     super(props);
     this.state = {
       name: '',
-      price: '',
+      price: 0,
       ingredients: [],
       image: {},
       shots: 1,
@@ -21,6 +21,14 @@ export default class DrinkScreen extends React.Component {
   }
 
   _handleCustom(shots) {
+    const originalPrice = this.props.navigation.getParam('drinkInfo').price;
+    if (shots === 2) {
+      this.setState({price: originalPrice + 2});
+    } else if (shots === 0) {
+      this.setState({price: originalPrice - 1});
+    } else {
+      this.setState({price: originalPrice});
+    }
     this.setState({shots: shots});
   }
 
@@ -90,7 +98,7 @@ export default class DrinkScreen extends React.Component {
         <View style={{flex: 1.5, marginTop: 20}}>
           <StyledButton
             buttonStyle={styles.proceed}
-            title='Proceed'
+            title={'Proceed - $' + this.state.price.toFixed(2)}
             onPress={() => this.props.navigation.navigate('Scan', {orderInfo: this.state})}
           />
         </View>
@@ -149,7 +157,8 @@ const styles = StyleSheet.create({
   },
   proceed: {
     backgroundColor: '#53c16d',
-    width: 200,
+    width: 254,
+    height: 56,
   },
   buttonTitle: {
     fontSize: 16,
