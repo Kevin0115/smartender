@@ -130,10 +130,13 @@ class HttpServer {
             res.status(200).send(projectedWallets);
         });
 
+        // needs "username" : "some_username"
         this.app.post('/operator/wallets', (req, res) => {
-            let password = req.body.password;
+            let username = req.body.username;
 
-            let newWallet = operator.createWalletFromPassword(password);
+            let newWallet = operator.createWalletFromPassword(username);
+
+            operator.generateAddressForWallet(newWallet.id);
 
             let projectedWallet = projectWallet(newWallet);
 
@@ -148,18 +151,19 @@ class HttpServer {
 
             res.status(200).send(projectedWallet);
         });
-
+        
+        // needs "username" : "some_user"
         this.app.post('/operator/wallets/:walletId/transactions', (req, res) => {
             let walletId = req.params.walletId;
-            let password = req.headers.password;
+            let username = req.headers.username;
 
-            if (password == null) throw new HTTPError(401, 'Wallet\'s password is missing.');
-            let passwordHash = CryptoUtil.hash(password);
+            if (username == null) throw new HTTPError(401, 'Wallet\'s username is missing.');
+            let usernameHash = CryptoUtil.hash(username);
 
             try {
-                if (!operator.checkWalletPassword(walletId, passwordHash)) throw new HTTPError(403, `Invalid password for wallet '${walletId}'`);
+                if (!operator.checkWalletPassword(walletId, usernameHash)) throw new HTTPError(403, `Invalid username for wallet '${walletId}'`);
 
-                let newTransaction = operator.createTransaction(walletId, req.body.fromAddress, req.body.toAddress, req.body.amount, req.body['changeAddress'] || req.body.fromAddress);
+                let newTransaction = operator.createTransaction(walletId, req.body.fromAddress, req.body.toAddress, req.body.amount, req.body.fromAddress);
 
                 newTransaction.check();
 
@@ -181,16 +185,17 @@ class HttpServer {
                 else throw ex;
             }
         });
-
+        
+        // needs "username" : "some_user"
         this.app.post('/operator/wallets/:walletId/addresses', (req, res) => {
             let walletId = req.params.walletId;
-            let password = req.headers.password;
+            let username = req.headers.username;
 
-            if (password == null) throw new HTTPError(401, 'Wallet\'s password is missing.');
-            let passwordHash = CryptoUtil.hash(password);
+            if (username == null) throw new HTTPError(401, 'Wallet\'s username is missing.');
+            let usernameHash = CryptoUtil.hash(username);
 
             try {
-                if (!operator.checkWalletPassword(walletId, passwordHash)) throw new HTTPError(403, `Invalid password for wallet '${walletId}'`);
+                if (!operator.checkWalletPassword(walletId, usernameHash)) throw new HTTPError(403, `Invalid username for wallet '${walletId}'`);
 
                 let newAddress = operator.generateAddressForWallet(walletId);
                 res.status(201).send({ address: newAddress });
@@ -229,7 +234,7 @@ class HttpServer {
         });
 
         this.app.post('/miner/mine', (req, res, next) => {
-            miner.mine(req.body.rewardAddress, req.body['feeAddress'] || req.body.rewardAddress)
+            miner.mine(req.body.rewardAddress, req.body.needsReward)
                 .then((newBlock) => {
                     newBlock = Block.fromJson(newBlock);
                     blockchain.addBlock(newBlock);
@@ -252,6 +257,7 @@ class HttpServer {
         return new Promise((resolve, reject) => {
             this.server = this.app.listen(port, host, (err) => {
                 if (err) reject(err);
+                console.info(`Listening http on port: ${this.server.address().port}, to access the API documentation go to http://${host}:${this.server.address().port}/api-docs/`);
                 resolve(this);
             });
         });

@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-const barcoin = require('../lib/barcoin');
+const barcoin = require('./../lib/barcoin')
 
 const argv = require('yargs')
     .usage('Usage: $0 [options]')

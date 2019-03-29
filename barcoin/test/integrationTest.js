@@ -130,7 +130,7 @@ describe('Integration Test', () => {
                     .get(`/operator/${context.address1}/balance`)
                     .expect(200)
                     .expect((res) => {
-                        assert.equal(res.body.balance, 30, `Expected balance of address '${context.address1}' to be '30'`);
+                        assert.equal(res.body.balance, 90, `Expected balance of address '${context.address1}' to be '9000000000'`);
                     });
             });
     });
@@ -142,7 +142,7 @@ describe('Integration Test', () => {
                     .get(`/operator/${context.address2}/balance`)
                     .expect(200)
                     .expect((res) => {
-                        assert.equal(res.body.balance, 10, `Expected balance of address '${context.address2}' to be '10'`);
+                        assert.equal(res.body.balance, 10, `Expected balance of address '${context.address2}' to be '1000000000'`);
                     });
             });
     });
@@ -266,7 +266,7 @@ describe('Integration Test', () => {
                     .get(`/operator/${context.address1}/balance`)
                     .expect(200)
                     .expect((res) => {
-                        assert.equal(res.body.balance, 20, `Expected balance of address '${context.address1}' to be '20'`);
+                        assert.equal(res.body.balance, 7999999999, `Expected balance of address '${context.address1}' to be '7999999999'`);
                     });
             });
     });
@@ -381,7 +381,7 @@ describe('Integration Test', () => {
                         .send({
                             fromAddress: context.address1,
                             toAddress: context.address2,
-                            amount: 8000000000,
+                            amount: 80,
                             changeAddress: context.address1
                         })
                         .expect(400);
@@ -486,7 +486,7 @@ describe('Integration Test', () => {
                             .send({
                                 fromAddress: context.address1,
                                 toAddress: context.address2,
-                                amount: 1000000000,
+                                amount: 10,
                                 changeAddress: context.address1
                             })
                             .expect(401);
@@ -502,7 +502,7 @@ describe('Integration Test', () => {
                             .send({
                                 fromAddress: context.address1,
                                 toAddress: context.address2,
-                                amount: 1,
+                                amount: 10,
                                 changeAddress: context.address1
                             })
                             .expect(403);

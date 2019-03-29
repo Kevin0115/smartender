@@ -1,7 +1,7 @@
 {
-  "name": "Barcoin",
-  "version": "0.0.1",
-  "description": "Barcoin, a cryptocurrency for smartender app",
+  "name": "barcoin",
+  "version": "0.0.2",
+  "description": "Barcoin, a cryptocurrency for Smartender",
   "license": "Apache-2.0",
   "bin": {
     "barcoin": "bin/barcoin.js"

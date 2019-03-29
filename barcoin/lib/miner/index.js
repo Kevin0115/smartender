@@ -11,8 +11,8 @@ class Miner {
         this.logLevel = logLevel;
     }
 
-    mine(rewardAddress, feeAddress) {
-        let baseBlock = Miner.generateNextBlock(rewardAddress, feeAddress, this.blockchain);
+    mine(rewardAddress, rewardFlag) {
+        let baseBlock = Miner.generateNextBlock(rewardAddress, rewardFlag, this.blockchain);
         process.execArgv = R.reject((item) => item.includes('debug'), process.execArgv);
 
         /* istanbul ignore next */
@@ -51,7 +51,7 @@ class Miner {
         return promise;
     }
 
-    static generateNextBlock(rewardAddress, feeAddress, blockchain) {
+    static generateNextBlock(rewardAddress, rewardFlag, blockchain) {
         const previousBlock = blockchain.getLastBlock();
         const index = previousBlock.index + 1;
         const previousHash = previousBlock.hash;
@@ -92,31 +92,31 @@ class Miner {
 
         console.info(`Selected ${selectedTransactions.length} candidate transactions with ${rejectedTransactions.length} being rejected.`);
 
-        // Get the first two avaliable transactions, if there aren't TRANSACTIONS_PER_BLOCK, it's empty
+        // Get the first two available transactions, if there aren't TRANSACTIONS_PER_BLOCK, it's empty
         let transactions = R.defaultTo([], R.take(Config.TRANSACTIONS_PER_BLOCK, selectedTransactions));
 
-        // Add fee transaction (1 satoshi per transaction)        
-        if (transactions.length > 0) {
-            let feeTransaction = Transaction.fromJson({
-                id: CryptoUtil.randomId(64),
-                hash: null,
-                type: 'fee',
-                data: {
-                    inputs: [],
-                    outputs: [
-                        {
-                            amount: Config.FEE_PER_TRANSACTION * transactions.length, // satoshis format
-                            address: feeAddress, // INFO: Usually here is a locking script (to check who and when this transaction output can be used), in this case it's a simple destination address 
-                        }
-                    ]
-                }
-            });
+        // // Add fee transaction (1 satoshi per transaction)        
+        // if (transactions.length > 0) {
+        //     let feeTransaction = Transaction.fromJson({
+        //         id: CryptoUtil.randomId(64),
+        //         hash: null,
+        //         type: 'fee',
+        //         data: {
+        //             inputs: [],
+        //             outputs: [
+        //                 {
+        //                     amount: Config.FEE_PER_TRANSACTION * transactions.length, // satoshis format
+        //                     address: feeAddress, // INFO: Usually here is a locking script (to check who and when this transaction output can be used), in this case it's a simple destination address 
+        //                 }
+        //             ]
+        //         }
+        //     });
 
-            transactions.push(feeTransaction);
-        }
+        //     transactions.push(feeTransaction);
+        // }
 
-        // Add reward transaction of 50 coins
-        if (rewardAddress != null) {
+        // Add reward transaction of MINING_REWARD coins
+        if (rewardAddress != null && rewardFlag == true) {
             let rewardTransaction = Transaction.fromJson({
                 id: CryptoUtil.randomId(64),
                 hash: null,

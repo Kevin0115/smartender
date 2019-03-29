@@ -3,7 +3,7 @@
     "info": {
         "description": "Visualize the blockchain by accessing <a href='/blockchain' target='_blank'>here</a>.",
         "version": "0.0.1",
-        "title": "Barcoin API"
+        "title": "Naivecoin API"
     },
     "basePath": "/",
     "schemes": [
@@ -273,7 +273,7 @@
                 "tags": [
                     "operator"
                 ],
-                "summary": "Create a wallet from a password",
+                "summary": "Create a wallet from a username",
                 "description": "",
                 "parameters": [
                     {
@@ -284,9 +284,9 @@
                         "schema": {
                             "type": "object",
                             "properties": {
-                                "password": {
+                                "username": {
                                     "type": "string",
-                                    "description": "Password (must contain more than 4 words)"
+                                    "description": "username(any string is fine)"
                                 }
                             }
                         }
@@ -374,11 +374,11 @@
                 "parameters": [
                     {
                         "in": "header",
-                        "name": "password",
-                        "description": "Wallet password",
+                        "name": "username",
+                        "description": "Wallet username",
                         "required": true,
                         "type": "string",
-                        "format": "password"
+                        "format": "username"
                     },
                     {
                         "in": "path",
@@ -429,11 +429,11 @@
                     },
                     {
                         "in": "header",
-                        "name": "password",
-                        "description": "Wallet password",
+                        "name": "username",
+                        "description": "Wallet username",
                         "required": true,
                         "type": "string",
-                        "format": "password"
+                        "format": "username"
                     },
                     {
                         "in": "body",
@@ -458,11 +458,7 @@
                                 },
                                 "amount": {
                                     "type": "integer",
-                                    "description": "Amount (in satoshis)"
-                                },
-                                "changeAddress": {
-                                    "type": "string",
-                                    "description": "Change address"
+                                    "description": "Amount (in barcoin)"
                                 }
                             }
                         }
@@ -618,9 +614,9 @@
                                     "description": "Address to send the reward",
                                     "type": "string"
                                 },
-                                "feeAddress": {
-                                    "description": "Address to send the fee",
-                                    "type": "string"
+                                "needsReward": {
+                                    "description": "If there should be a reward for this mining",
+                                    "type": "boolean"
                                 }
                             }
                         }
