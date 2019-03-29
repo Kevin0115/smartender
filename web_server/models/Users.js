@@ -5,6 +5,7 @@ var UserSchema = mongoose.Schema({
   id: String,
   pic: String,
   drink_count: Number,
+  balance: Number,
 })
 
 module.exports = mongoose.model('Users', UserSchema);
