@@ -56,14 +56,12 @@ export default class DrinkScreen extends React.Component {
     })
     .then(res => res.json())
     .then(json => {
-      console.log(json);
       if (json.balance && json.balance >= this.state.price) {
         this.props.navigation.navigate('Scan', {orderInfo: this.state})
       } else {
         Alert.alert('Sorry, you do not have the funds to buy this drink');
       }
     })
-    
   }
 
   render() {

@@ -20,7 +20,7 @@ export default class OrderScreen extends React.Component {
     }
     this._renderIndicator = this._renderIndicator.bind(this);
     this._renderMessage = this._renderMessage.bind(this);
-    this._updateDrinkCount = this._updateDrinkCount.bind(this);
+    this._updateUserData = this._updateUserData.bind(this);
   }
 
   componentDidMount() {
@@ -37,10 +37,9 @@ export default class OrderScreen extends React.Component {
     .then(res => res.json())
     .then(json => {
       this.setState({status: json.status !== 'No Inventory' && json.busy === false});
-      console.log(json);
     })
     .then(setTimeout(() => {
-      this._updateDrinkCount();
+      this._updateUserData();
     }, 2000))
     // For drink counting purposes
     .catch(function(error) {
@@ -49,7 +48,7 @@ export default class OrderScreen extends React.Component {
     });
   }
 
-  async _updateDrinkCount() {
+  async _updateUserData() {
     const userData = JSON.parse(await AsyncStorage.getItem('fbUser'));
 
     fetch(BASE_URL + '/users/' + userData.id + '/drinks', {
@@ -59,6 +58,21 @@ export default class OrderScreen extends React.Component {
       },
       // This might change if we allow multiple drink orders at once
       body: JSON.stringify({drinks: 1}),
+    })
+    .then(res => res.json())
+    .then(json => console.log(json))
+    .catch(function(error) {
+      console.log('Error: ' + error.message);
+      throw error;
+    });
+
+    fetch(BASE_URL + '/users/' + userData.id + '/balance', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      // This might change if we allow multiple drink orders at once
+      body: JSON.stringify({price: this.state.orderInfo.price}),
     })
     .then(res => res.json())
     .then(json => console.log(json))
