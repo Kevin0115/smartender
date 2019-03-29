@@ -79,7 +79,7 @@ router.post('/', function(req, res) {
             // For Testing, use this
             var TEST_PI_URL = constants.TEST_PI_URL;
 
-            fetch(PI_URL + '/order', {
+            fetch(TEST_PI_URL + '/order', {
               method: 'POST',
               headers: {
                 'Content-Type': 'application/json'

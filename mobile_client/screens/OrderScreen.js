@@ -13,14 +13,10 @@ import { StyledButton, StyledText, StyledScreen } from '../components/StyledElem
 export default class OrderScreen extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {    
+    this.state = {
+      status: true,
       orderInfo: this.props.navigation.getParam('orderInfo'),
-
-      // API Flags
-      response: false, // To know when to display message, based on timer
-      inventoryStatus: true,
-      balanceStatus: true,
-      available: true,
+      response: false,
     }
     this._renderIndicator = this._renderIndicator.bind(this);
     this._renderMessage = this._renderMessage.bind(this);
@@ -40,11 +36,7 @@ export default class OrderScreen extends React.Component {
     })
     .then(res => res.json())
     .then(json => {
-      this.setState({
-        inventoryStatus: json.status !== 'No Inventory',
-        available: json.busy === false,
-        balanceStatus: json.status !== 'Insufficient Funds',
-      });
+      this.setState({status: json.status !== 'No Inventory' && json.busy === false});
       console.log(json);
     })
     .then(setTimeout(() => {
@@ -90,10 +82,9 @@ export default class OrderScreen extends React.Component {
     );
   }
 
-  // Fix this for individual messages
   _renderMessage() {    
     return (
-      this.state.inventoryStatus ?
+      this.state.status ?
       <View style={styles.container}>
         <Image
           source={require('../assets/images/success.png')}

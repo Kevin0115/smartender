@@ -25,8 +25,7 @@ export default class ScanScreen extends React.Component {
 
       // Order Info
       orderInfo: this.props.navigation.getParam('orderInfo'),
-      username: '',
-      user_id: '',
+      username: ''
     }
     this._scanCode = this._scanCode.bind(this);
     this._handleOrder = this._handleOrder.bind(this);
@@ -41,11 +40,7 @@ export default class ScanScreen extends React.Component {
 
   _retrieveData = async () => {
     const userData = JSON.parse(await AsyncStorage.getItem('fbUser'));
-    console.log(userData);
-    this.setState({
-      username: userData.name,
-      user_id: userData.id
-    });
+    this.setState({username: userData.name});
   }
 
   _scanCode(arg) {
@@ -77,7 +72,6 @@ export default class ScanScreen extends React.Component {
   _handleOrder() {
     const orderInfo = {
       username: this.state.username,
-      user_id: this.state.user_id,
       machine_id: this.state.id,
       drink_id: this.state.orderInfo.drinkId,
       shots: this.state.orderInfo.shots,

@@ -5,8 +5,11 @@ import {
   StyleSheet,
   View,
   FlatList,
+  AsyncStorage,
+  Alert
 } from 'react-native';
 import { StyledButton, StyledText, StyledScreen } from '../components/StyledElements';
+import { LOCALHOST, BASE_URL } from '../constants/Auth';
 
 export default class DrinkScreen extends React.Component {
   constructor(props) {
@@ -17,7 +20,22 @@ export default class DrinkScreen extends React.Component {
       ingredients: [],
       image: {},
       shots: 1,
+      user_id: '',
     }
+    this._handleProceed = this._handleProceed.bind(this);
+  }
+
+  async componentDidMount() {
+    const drinkInfo = this.props.navigation.getParam('drinkInfo');
+    const userData = JSON.parse(await AsyncStorage.getItem('fbUser'));
+    this.setState({
+      name: drinkInfo.name,
+      price: drinkInfo.price,
+      ingredients: drinkInfo.ingredients,
+      image: drinkInfo.uri,
+      drinkId: drinkInfo.drinkId,
+      user_id: userData.id
+    });
   }
 
   _handleCustom(shots) {
@@ -32,15 +50,24 @@ export default class DrinkScreen extends React.Component {
     this.setState({shots: shots});
   }
 
-  componentDidMount() {
-    const drinkInfo = this.props.navigation.getParam('drinkInfo');
-    this.setState({
-      name: drinkInfo.name,
-      price: drinkInfo.price,
-      ingredients: drinkInfo.ingredients,
-      image: drinkInfo.uri,
-      drinkId: drinkInfo.drinkId
-    });
+  _handleProceed() {
+    fetch(BASE_URL + '/users/' + this.state.user_id + '/balance', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({price: this.state.price}),
+    })
+    .then(res => res.json())
+    .then(json => {
+      console.log(json);
+      if (json.status !== 'Insufficient Funds') {
+        this.props.navigation.navigate('Scan', {orderInfo: this.state})
+      } else {
+        Alert.alert('Sorry, you do not have the funds to buy this drink');
+      }
+    })
+    
   }
 
   render() {
@@ -99,7 +126,7 @@ export default class DrinkScreen extends React.Component {
           <StyledButton
             buttonStyle={styles.proceed}
             title={'Proceed - $' + this.state.price.toFixed(2)}
-            onPress={() => this.props.navigation.navigate('Scan', {orderInfo: this.state})}
+            onPress={this._handleProceed}
           />
         </View>
       </StyledScreen>
