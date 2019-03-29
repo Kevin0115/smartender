@@ -4,8 +4,10 @@ import {
   StyleSheet,
   View,
   Alert,
-  AsyncStorage
+  AsyncStorage,
+  Button
 } from 'react-native';
+import Modal from 'react-native-modal';
 import { StyledButton, StyledText, StyledScreen } from '../components/StyledElements';
 import { APP_ID, BASE_URL } from '../constants/Auth';
 import Colors from '../constants/Colors';
@@ -19,7 +21,9 @@ export default class SettingsScreen extends React.Component {
       isGuest: true,
       drinkCount: "  ",
       balance: 0,
+      modalVisible: false
     }
+    this._toggleModal = this._toggleModal.bind(this);
   }
 
   componentDidMount() {
@@ -68,6 +72,10 @@ export default class SettingsScreen extends React.Component {
     );
   };
 
+  _toggleModal() {
+    this.setState({modalVisible: !this.state.modalVisible});
+  }
+
   _renderUserInfo() {
     return (
       this.state.isGuest ? 
@@ -77,14 +85,21 @@ export default class SettingsScreen extends React.Component {
         </StyledText>
       </View>
       :
-      <View style={{flex: 2, alignItems: 'center'}}>
-        <StyledText style={{flex: 1, fontSize: 18}}>
+      <View style={styles.contentContainer}>
+        <StyledText style={{flex: 1, fontSize: 18, marginBottom: 20}}>
           Drinks Ordered: {this.state.drinkCount}
         </StyledText>
-        <StyledText style={{flex: 1, fontSize: 18}}>
-          BarCoin Balance: ${this.state.balance.toFixed(2)}
-        </StyledText>
-        <StyledText style={{flex: 1, fontSize: 18, color: 'blue'}}>
+        <View style={{flex: 2, marginBottom: 20}}>
+          <StyledText style={{fontSize: 18}}>
+            BarCoin Balance: ${this.state.balance.toFixed(2)}
+          </StyledText>
+          <Button
+            title="Add Funds"
+            style={styles.addFunds}
+            onPress={this._toggleModal}
+          />
+        </View>
+        <StyledText style={{flex: 1, fontSize: 18, color: 'green'}}>
           Please Drink Responsibly!
         </StyledText>
       </View>
@@ -127,6 +142,19 @@ export default class SettingsScreen extends React.Component {
             onPress={() => this.props.navigation.popToTop()}
           />
         </View>
+        <Modal
+          isVisible={this.state.modalVisible}
+          backdropOpacity={0.7}
+        >
+          <View style={styles.modalContent}>
+            {/*Add fund adding logic HERE!!!*/}
+            <StyledText style={{fontSize: 20}}>Add Funds</StyledText>
+            <Button
+              title="OK"
+              onPress={this._toggleModal}
+            />
+          </View>
+        </Modal>
       </StyledScreen>
     );
   }
@@ -151,6 +179,12 @@ const styles = StyleSheet.create({
   name: {
     fontSize: 28, 
   },
+  contentContainer: {
+    display: 'flex',
+    flex: 2,
+    alignItems: 'center',
+    justifyContent: 'space-evenly',
+  },
   buttonContainer: {
     flex: 0.8,
   },
@@ -165,5 +199,12 @@ const styles = StyleSheet.create({
   },
   buttonTitle: {
     color: 'white',
+  },
+  modalContent: {
+    backgroundColor: "white",
+    padding: 22,
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 16,
   }
 });
