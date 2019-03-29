@@ -72,4 +72,33 @@ router.put('/:user_id/drinks', function(req, res) {
   })
 })
 
+// Update User Balance
+router.put('/:user_id/balance', function(req, res) {
+  var user_id = req.params.user_id;
+  var price = req.body.price;
+  Users.findOne({id: user_id})
+  .exec(function(err, user) {
+    if (user == undefined) {
+      res.send({status: 'User Does Not Exist'});
+    } else {
+      var currBalance = user.balance;
+      if (currBalance - price < 0) {
+        res.send({status: 'Insufficient Funds'});
+      } else {
+        Users.updateOne(
+          {id: user_id},
+          {$inc: {balance: -1*price}}
+        )
+        .exec(function(err, user) {
+          if(err) {
+            res.send({status: 'Error'});
+          } else {
+            res.send({status: 'Balance Updated'});
+          }
+        })
+      }
+    }
+  })
+})
+
 module.exports = router;

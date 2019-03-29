@@ -17,7 +17,8 @@ export default class SettingsScreen extends React.Component {
       userName: '',
       userPic: 'undefined',
       isGuest: true,
-      drinkCount: "  "
+      drinkCount: "  ",
+      balance: 0,
     }
   }
 
@@ -34,7 +35,10 @@ export default class SettingsScreen extends React.Component {
       method: 'GET',
     })
     .then(res => res.json())
-    .then(json => this.setState({drinkCount: json.drink_count}))
+    .then(json => this.setState({
+      drinkCount: json.drink_count,
+      balance: json.balance
+    }))
     .catch(function(error) {
       console.log('Error: ' + error.message);
       throw error;
@@ -64,6 +68,29 @@ export default class SettingsScreen extends React.Component {
     );
   };
 
+  _renderUserInfo() {
+    return (
+      this.state.isGuest ? 
+      <View style={{flex: 2}}>
+        <StyledText style={{flex: 1, fontSize: 18, color: 'blue'}}>
+          Please Drink Responsibly!
+        </StyledText>
+      </View>
+      :
+      <View style={{flex: 2, alignItems: 'center'}}>
+        <StyledText style={{flex: 1, fontSize: 18}}>
+          Drinks Ordered: {this.state.drinkCount}
+        </StyledText>
+        <StyledText style={{flex: 1, fontSize: 18}}>
+          BarCoin Balance: ${this.state.balance.toFixed(2)}
+        </StyledText>
+        <StyledText style={{flex: 1, fontSize: 18, color: 'blue'}}>
+          Please Drink Responsibly!
+        </StyledText>
+      </View>
+    )
+  }
+
   render() {
     return (
       <StyledScreen>
@@ -83,14 +110,8 @@ export default class SettingsScreen extends React.Component {
             {this.state.userName}
           </StyledText>
         </View>
-        {
-          this.state.isGuest ?
-          <View style={{flex: 1}} />
-          :
-          <StyledText style={{flex: 1, fontSize: 20}}>
-            Drinks Ordered: {this.state.drinkCount}
-          </StyledText>}
-        <View style={{flex: 2}} />
+        {this._renderUserInfo()}
+        <View style={{flex: 1}} />
         <View style={styles.buttonContainer}>
           <StyledButton
             buttonStyle={styles.logoutButton}
