@@ -52,16 +52,12 @@ export default class DrinkScreen extends React.Component {
 
   _handleProceed() {
     fetch(BASE_URL + '/users/' + this.state.user_id + '/balance', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({price: this.state.price}),
+      method: 'GET',
     })
     .then(res => res.json())
     .then(json => {
       console.log(json);
-      if (json.status !== 'Insufficient Funds') {
+      if (json.balance && json.balance >= this.state.price) {
         this.props.navigation.navigate('Scan', {orderInfo: this.state})
       } else {
         Alert.alert('Sorry, you do not have the funds to buy this drink');

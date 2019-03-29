@@ -72,6 +72,19 @@ router.put('/:user_id/drinks', function(req, res) {
   })
 })
 
+// Get User Balance
+router.get('/:user_id/balance', function(req, res) {
+  var user_id = req.params.user_id;
+  Users.findOne({id: user_id})
+  .exec(function(err, user) {
+    if (user == undefined) {
+      res.send({status: 'User Does Not Exist'});
+    } else {
+      res.send({balance: user.balance});
+    }
+  })
+})
+
 // Update User Balance
 router.put('/:user_id/balance', function(req, res) {
   var user_id = req.params.user_id;
