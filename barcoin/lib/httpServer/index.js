@@ -130,6 +130,21 @@ class HttpServer {
             res.status(200).send(projectedWallets);
         });
 
+
+        // Bar account is set to be: (username : smartenerMainAccount)
+        // {
+        //     "id": "dd8642c6b428cc4bfac39fe67f94df38c3f9293a2f36cc91375cd4a65efb16a0",
+        //     "addresses": [
+        //       "b30e5d728f79e253f00268d27cddced6230a0f01cd5e705fb8cb8f1fe0d18176"
+        //     ]
+        // }
+
+        this.app.get('/operator/smartenderAccountWallet', (req, res) => {
+            let walletFound = operator.getWalletById('dd8642c6b428cc4bfac39fe67f94df38c3f9293a2f36cc91375cd4a65efb16a0');
+            let projectedWallet = projectWallet(walletFound);
+            res.status(200).send(projectedWallet);
+        });
+
         // needs "username" : "some_username"
         this.app.post('/operator/wallets', (req, res) => {
             let username = req.body.username;
