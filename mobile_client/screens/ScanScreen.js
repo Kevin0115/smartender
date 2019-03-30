@@ -100,14 +100,14 @@ export default class ScanScreen extends React.Component {
             Find the QR Code on a Smartender and scan it with your phone.
           </StyledText>
           <View style={{ flex: 3 }}>
-            <BarCodeScanner
+            <Camera
               style={styles.scanner}
               type={this.state.type}
               autoFocus={this.state.focus}
               onBarCodeScanned={this._scanCode}
             >
               {this._renderCheck()}
-            </BarCodeScanner>
+            </Camera>
           </View>
           <StyledText style={styles.instructions}>
             {this.state.message}
