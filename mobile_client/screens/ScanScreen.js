@@ -7,7 +7,8 @@ import {
   Alert,
   AsyncStorage
 } from 'react-native';
-import { Camera, Permissions, BarCodeScanner } from 'expo';
+import { Camera, Permissions } from 'expo';
+import { BarCodeScanner } from 'expo-barcode-scanner';
 import { StyledButton, StyledText, StyledScreen } from '../components/StyledElements';
 
 export default class ScanScreen extends React.Component {
