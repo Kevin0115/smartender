@@ -1,5 +1,6 @@
 # smartender
 *smartender* is a bartending machine that receives orders from the *smartender* app.
+
 Drinks are customizable (double, virgin, regular), and are paid for by our in-house cryptocurrency, BarCoin.
 
 ## Features
@@ -10,9 +11,13 @@ Drinks are customizable (double, virgin, regular), and are paid for by our in-ho
 
 ## Links
 App: https://expo.io/@kevin0115/smartender
+
 Central Server: http://smartender.kevnchoi.com
+
 Blockchain Server: http://barcoin.kevnchoi.com
+
 Analytics Website: https://nishat1.github.io/smartender
+
 Smartender #0 Server: https://smartender-5t3k-qc8z.try.yaler.io
 
 ## Demo
