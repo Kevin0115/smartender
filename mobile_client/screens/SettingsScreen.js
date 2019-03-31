@@ -6,7 +6,6 @@ import {
   Alert,
   AsyncStorage,
   Button,
-  TextInput,
   ActivityIndicator
 } from 'react-native';
 import Modal from 'react-native-modal';
@@ -23,12 +22,14 @@ export default class SettingsScreen extends React.Component {
       isGuest: true,
       drinkCount: '  ',
       balance: 0,
+      walletID: '',
+      walletAddress: '',
       modalVisible: false,
       addFund: '',
-      spinnerVisible: false
+      spinnerVisible: false,
     }
     this._toggleModal = this._toggleModal.bind(this);
-    this._handleAddFund = this._handleAddFund.bind(this);
+    this._handleMine = this._handleMine.bind(this);
   }
 
   componentDidMount() {
@@ -46,7 +47,20 @@ export default class SettingsScreen extends React.Component {
     .then(res => res.json())
     .then(json => this.setState({
       drinkCount: json.drink_count,
-      balance: json.balance
+      walletID: json.wallet.id,
+      walletAddress: json.wallet.addresses[0],
+    }))
+    .catch(function(error) {
+      console.log('Error: ' + error.message);
+      throw error;
+    });
+
+    fetch(BASE_URL + '/users/' + userData.id + '/balance', {
+      method: 'GET',
+    })
+    .then(res => res.json())
+    .then(json => this.setState({
+      balance: json.balance,
     }))
     .catch(function(error) {
       console.log('Error: ' + error.message);
@@ -55,6 +69,7 @@ export default class SettingsScreen extends React.Component {
 
     this.setState({
       userName: userData.name,
+      userID: userData.id,
       userPic: userPic,
       isGuest: isGuest,
     });
@@ -84,18 +99,15 @@ export default class SettingsScreen extends React.Component {
     });
   }
 
-  async _handleAddFund() {
+  _handleMine() {
     this.setState({spinnerVisible: true})
-    console.log(this.state.addFund);
-    const userData = JSON.parse(await AsyncStorage.getItem('fbUser'));
-    // API Call to Update Balance
-    fetch(BASE_URL + '/users/' + userData.id + '/balance', {
+
+    fetch(BASE_URL + '/users/' + this.state.userID + '/wallet', {
       method: 'PUT',
       headers: {
         'Content-Type': 'application/json'
       },
-      // Negative because API subtracts by default
-      body: JSON.stringify({price: -1*parseInt(this.state.addFund)})
+      body: JSON.stringify({walletID: this.state.walletID})
     })
     .then(res => res.json())
     .then(json => {
@@ -111,6 +123,34 @@ export default class SettingsScreen extends React.Component {
       throw error;
     });
   }
+
+  // async _handleAddFund() {
+  //   this.setState({spinnerVisible: true})
+  //   console.log(this.state.addFund);
+  //   const userData = JSON.parse(await AsyncStorage.getItem('fbUser'));
+  //   // API Call to Update Balance
+  //   fetch(BASE_URL + '/users/' + userData.id + '/balance', {
+  //     method: 'PUT',
+  //     headers: {
+  //       'Content-Type': 'application/json'
+  //     },
+  //     // Negative because API subtracts by default
+  //     body: JSON.stringify({price: -1*parseInt(this.state.addFund)})
+  //   })
+  //   .then(res => res.json())
+  //   .then(json => {
+  //     console.log(json);
+  //     setTimeout(() => {
+  //       this._retrieveData();
+  //       this.setState({spinnerVisible: false});
+  //       this._toggleModal();
+  //     }, 1000);
+  //   })
+  //   .catch(function(error) {
+  //     console.log('Error: ' + error.message);
+  //     throw error;
+  //   });
+  // }
 
   _renderUserInfo() {
     return (
@@ -189,21 +229,16 @@ export default class SettingsScreen extends React.Component {
               Add Funds
             </StyledText>
             <StyledText style={{textAlign: 'center', marginBottom: 20}}>
-              This is a beta feature. You can add all the money you want.
+              In order to receive more funds,
+              you must "mine" more blocks in the blockchain to receive more BarCoin as a reward.
+              You are limited to 1 mine per hour.
             </StyledText>
-            <TextInput
-              placeholder='Add Funds'
-              placeholderTextColor='grey'
-              keyboardType='number-pad'
-              maxLength={5}
-              style={styles.textInput}
-              onChangeText={(addFund) => this.setState({addFund})}
-              value={this.state.addFund}
-            />
             <ActivityIndicator animating={this.state.spinnerVisible} size='large' color='#0000ff' />
-            <Button
-              title='OK'
-              onPress={this._handleAddFund}
+            <View style={{height: 20}} />
+            <StyledButton
+              buttonStyle={styles.mineButton}
+              onPress={this._handleMine}
+              title='Mine'
             />
             <Button
               title='Cancel'
@@ -267,13 +302,7 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     borderRadius: 16,
   },
-  textInput: {
-    textAlign: 'center',
-    marginBottom: 20,
-    height: 40,
-    width: 120,
-    borderRadius: 4,
-    borderColor: 'gray',
-    borderWidth: 1
+  mineButton: {
+    width: 180
   }
 });

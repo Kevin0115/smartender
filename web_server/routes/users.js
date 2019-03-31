@@ -102,6 +102,7 @@ router.get('/:user_id/balance', function(req, res) {
       })
       .then(res => res.json())
       .then(json => res.send(json))
+      .catch(error => console.log('Error: ' + error.message));
     }
   })
 })
@@ -133,6 +134,25 @@ router.put('/:user_id/balance', function(req, res) {
       }
     }
   })
+})
+
+router.put('/:user_id/wallet', function(req, res) {
+  var user_id = req.params.user_id;
+  var wallet_address = req.body.walletAddress
+
+  fetch(constants.BARCOIN_SERVER_URL + '/miner/mine', {
+  method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      rewardAddress: wallet_address,
+      needsReward: true
+    })
+  })
+  .then(res => res.json())
+  .then(json => console.log(json))
+  .catch(error => console.log('Error: ' + error.message));  
 })
 
 module.exports = router;
