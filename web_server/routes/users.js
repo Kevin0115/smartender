@@ -152,7 +152,7 @@ router.put('/:user_id/wallet', function(req, res) {
     })
   })
   .then(res => res.json())
-  .then(json => console.log(json))
+  .then(json => res.send(json))
   .catch(error => console.log('Error: ' + error.message));  
 })
 
