@@ -97,12 +97,16 @@ router.get('/:user_id/balance', function(req, res) {
     if (user == undefined) {
       res.send({status: 'User Does Not Exist'});
     } else {
-      res.send({balance: user.balance});
+      fetch(constants.BARCOIN_SERVER_URL + '/operator/' + user.wallet.id + '/balance', {
+        method: 'GET',
+      })
+      .then(res => res.json())
+      .then(json => res.send(json))
     }
   })
 })
 
-// Update User Balance
+// Update User Balance - DEPRECATED (?) from Barcoin
 router.put('/:user_id/balance', function(req, res) {
   var user_id = req.params.user_id;
   var price = req.body.price;
