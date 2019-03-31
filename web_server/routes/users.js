@@ -1,6 +1,8 @@
 var express = require('express');
 var router = express.Router();
 var utils = require('../utils/utils');
+var constants = require('../utils/const');
+var fetch = require('node-fetch');
 
 // Get all users in system
 router.get('/', function(req, res) {
@@ -17,29 +19,44 @@ router.get('/', function(req, res) {
 // Initialize new user
 router.post('/', function(req, res) {
   var user_id = req.body.id;
-  Users.findOne({id: user_id})
-  .exec(function(err, user) {
-    // If user doesn't already exist, insert
-    if (user == undefined) {
-      Users.create({
-        username: req.body.username,
-        id: req.body.id,
-        pic: req.body.pic,
-        drink_count: 0,
-        balance: 0,
-      }, function(err, user) {
-        if(err) {
-          res.send({status: 'Error'});
-        } else {
-          res.send({status: 'User Created'});
-        }
-      })
-    // Otherwise, don't insert new user
-    } else {
-      res.send({status: 'User Already Exists'});
-    }
+  var username = req.body.username;
+  var wallet = {};
+
+  fetch(constants.BARCOIN_SERVER_URL + '/operator/wallets', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({username: username})
   })
-  
+  .then(res => res.json())
+  .then(json => wallet = json)
+  .then(() => {
+    Users.findOne({id: user_id})
+    .exec(function(err, user) {
+      // If user doesn't already exist, insert
+      if (user == undefined) {
+        Users.create({
+          username: req.body.username,
+          id: req.body.id,
+          pic: req.body.pic,
+          drink_count: 0,
+          balance: 0,
+          wallet: wallet
+        }, function(err, user) {
+          if(err) {
+            res.send({status: 'Error'});
+          } else {
+            res.send({status: 'User Created'});
+          }
+        })
+      // Otherwise, don't insert new user
+      } else {
+        res.send({status: 'User Already Exists'});
+      }
+    })
+  })
+  .catch(error => console.log('Error: ' + error.message));
 })
 
 // Get a user by ID

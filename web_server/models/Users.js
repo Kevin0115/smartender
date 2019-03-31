@@ -6,6 +6,7 @@ var UserSchema = mongoose.Schema({
   pic: String,
   drink_count: Number,
   balance: Number,
+  wallet: Object
 })
 
 module.exports = mongoose.model('Users', UserSchema);
