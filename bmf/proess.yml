@@ -1,0 +1,5 @@
+apps:
+ - script : bin/barcoin.js -p 3002 --name 1
+ instances: 1
+ exec_mode: cluster
+

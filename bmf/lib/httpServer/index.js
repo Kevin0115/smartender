@@ -42,7 +42,7 @@ class HttpServer {
         };
         this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-        this.app.get('/blockchain', (req, res) => {
+        this.app.get('/', (req, res) => {
             if (req.headers['accept'] && req.headers['accept'].includes('text/html'))
                 res.render('blockchain/index.pug', {
                     pageTitle: 'Blockchain',
