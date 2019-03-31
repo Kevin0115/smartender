@@ -15,6 +15,7 @@ export default class OrderScreen extends React.Component {
     super(props);
     this.state = {
       status: true,
+      noInventory: false,
       orderInfo: this.props.navigation.getParam('orderInfo'),
       response: false,
     }
@@ -36,7 +37,10 @@ export default class OrderScreen extends React.Component {
     })
     .then(res => res.json())
     .then(json => {
-      this.setState({status: json.status !== 'No Inventory' && json.busy === false});
+      this.setState({
+        status: json.busy === false,
+        noInventory: json.status === 'No Inventory'
+      });
     })
     .then(setTimeout(() => {
       this._updateUserData();
@@ -66,8 +70,23 @@ export default class OrderScreen extends React.Component {
       throw error;
     });
 
-    fetch(BASE_URL + '/users/' + userData.id + '/balance', {
-      method: 'PUT',
+    // fetch(BASE_URL + '/users/' + userData.id + '/balance', {
+    //   method: 'PUT',
+    //   headers: {
+    //     'Content-Type': 'application/json'
+    //   },
+    //   // This might change if we allow multiple drink orders at once
+    //   body: JSON.stringify({price: this.state.orderInfo.price}),
+    // })
+    // .then(res => res.json())
+    // .then(json => console.log(json))
+    // .catch(function(error) {
+    //   console.log('Error: ' + error.message);
+    //   throw error;
+    // });
+
+    fetch(BASE_URL + '/users/' + userData.id + '/transaction', {
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
@@ -114,20 +133,39 @@ export default class OrderScreen extends React.Component {
         />
       </View>
       :
-      <View style={styles.container}>
-        <Image
-          source={require('../assets/images/error.png')}
-          style={styles.check}              
-        />
-        <StyledText style={styles.confirm}>
-          We're sorry, we couldn't complete your order. Please try again later.
-        </StyledText>
-        <StyledButton
-          buttonStyle={styles.button}
-          title='OK'
-          onPress={() => this.props.navigation.popToTop()}
-        />
-      </View>
+      (
+        this.state.noInventory ?
+        <View style={styles.container}>
+          <Image
+            source={require('../assets/images/error.png')}
+            style={styles.check}              
+          />
+          <StyledText style={styles.confirm}>
+            We're sorry, this drink seems to be unavailable right now.
+          </StyledText>
+          <StyledButton
+            buttonStyle={styles.button}
+            title='OK'
+            onPress={() => this.props.navigation.popToTop()}
+          />
+        </View>
+        :
+        <View style={styles.container}>
+          <Image
+            source={require('../assets/images/error.png')}
+            style={styles.check}              
+          />
+          <StyledText style={styles.confirm}>
+            We're sorry, we couldn't complete your order. Please try again later.
+          </StyledText>
+          <StyledButton
+            buttonStyle={styles.button}
+            title='OK'
+            onPress={() => this.props.navigation.popToTop()}
+          />
+        </View>
+      )
+      
     )
   }
 

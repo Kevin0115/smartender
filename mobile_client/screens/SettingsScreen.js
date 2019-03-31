@@ -107,11 +107,13 @@ export default class SettingsScreen extends React.Component {
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({walletID: this.state.walletID})
+      body: JSON.stringify({
+        walletAddress: this.state.walletAddress,
+        reward: true
+      })
     })
     .then(res => res.json())
     .then(json => {
-      console.log(json);
       setTimeout(() => {
         this._retrieveData();
         this.setState({spinnerVisible: false});

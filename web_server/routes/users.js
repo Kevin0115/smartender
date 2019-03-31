@@ -137,9 +137,57 @@ router.get('/:user_id/balance', function(req, res) {
 //   })
 // })
 
+
+// CHANGE THIS. THIS IS A GET RIGHT NOW
+router.post('/:user_id/transaction', function(req, res) {
+  var user_id = req.params.user_id;
+  var price = req.body.price;
+
+  Users.findOne({id: user_id})
+  .exec(function(err, user) {
+    if (user == undefined) {
+      res.send({status: 'User Does Not Exist'});
+    } else {
+      var username = user.username;
+      var walletID = user.wallet.id;
+      var walletAddress = user.wallet.addresses[0];
+      fetch(constants.BARCOIN_SERVER_URL + '/operator/wallets/' + walletID + '/transactions', {
+      method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'username': username,
+        },
+        body: JSON.stringify({
+          fromAddress: walletAddress,
+          toAddress: constants.BARCOIN_ADDRESS,
+          amount: price
+        })
+      })
+      .then(res => res.json())
+      .then(json => console.log(json))
+      .then(() => {
+        fetch(constants.SERVER_URL + '/users/' + user_id + '/wallet', {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({
+            walletAddress: walletAddress,
+            reward: false
+          })
+        })
+        .then(res => res.json())
+        .then(json => res.send(json));
+      })
+      .catch(error => console.log('Error: ' + error.message)); 
+    }
+  })
+})
+
 router.put('/:user_id/wallet', function(req, res) {
   var user_id = req.params.user_id;
   var wallet_address = req.body.walletAddress
+  var reward = req.body.reward;
 
   fetch(constants.BARCOIN_SERVER_URL + '/miner/mine', {
   method: 'POST',
@@ -148,7 +196,7 @@ router.put('/:user_id/wallet', function(req, res) {
     },
     body: JSON.stringify({
       rewardAddress: wallet_address,
-      needsReward: true
+      needsReward: reward
     })
   })
   .then(res => res.json())
