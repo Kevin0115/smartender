@@ -1,37 +1,19 @@
 # smartender
-Bartending machine capable of creating cocktails received from a mobile application
+*smartender* is a bartending machine that receives orders from the *smartender* app.
+Drinks are customizable (double, virgin, regular), and are paid for by our in-house cryptocurrency, BarCoin.
 
-## Message to devs
-Different components of our project have been organized into the obviously named directories
-/web_client (NISHAT)
-/mobile_client (KEVIN)
-/web_server (KEVIN)
+## Features
+- Browse a variety of drinks, each of which are customizable
+- QR code scanner is used to scan the machine to identify which machine to order to
+- User profile displays number of drinks order; also allows for balance checking/updating
+- BarCoin is built on a TypeScript blockchain
 
+## Links
+App: https://expo.io/@kevin0115/smartender
+Central Server: http://smartender.kevnchoi.com
+Blockchain Server: http://barcoin.kevnchoi.com
+Analytics Website: https://nishat1.github.io/smartender
+Smartender #0 Server: https://smartender-5t3k-qc8z.try.yaler.io
 
-Amir/Johnny you can add a directory for your hardware/pi_server code as you please.
-
-## Startup (directed at Nishat)
-To get started with the React app you'll need to follow these steps
-
-0. Open up **Node Command Prompt** (not git bash or regular cmd)
-
-1. From the ```root``` directory, you'll want to navigate into the ```/web_client``` directory
-
-  ```cd web_client```
-
-2. Install the node modules you need, you only need the command
-
-  ```npm install```
-
-3. When that's done, you can just start the app with
-
-  ```npm start```
-
-4. The above step should've opened your browser to ```localhost:3000```. If not, you can open it yourself.
-
-
-## Pi server
-
-0. Install Flask package for pi, run ```sudo apt-get install python3-flask```
-
-1. Run ```flask_test_server.py``` (To test busy case uncomment line 98) 
+## Demo
+See [this YouTube video](https://www.youtube.com/watch?v=RcJTuN3p8qs) for a short demo. A full-fledged demo of will be added later.
