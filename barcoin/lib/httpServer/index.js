@@ -42,7 +42,7 @@ class HttpServer {
         };
         this.app.use('/api-docs', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
-        this.app.get('/blockchain', (req, res) => {
+        this.app.get('/', (req, res) => {
             if (req.headers['accept'] && req.headers['accept'].includes('text/html'))
                 res.render('blockchain/index.pug', {
                     pageTitle: 'Blockchain',
@@ -93,7 +93,7 @@ class HttpServer {
             res.status(200).send(transactionFromBlock);
         });
 
-        this.app.get('/blockchain/transactions', (req, res) => {
+        this.app.get('/transactions', (req, res) => {
             if (req.headers['accept'] && req.headers['accept'].includes('text/html'))
                 res.render('blockchain/transactions/index.pug', {
                     pageTitle: 'Unconfirmed Transactions',
@@ -269,13 +269,15 @@ class HttpServer {
     }
 
     listen(host, port) {
-        return new Promise((resolve, reject) => {
-            this.server = this.app.listen(port, host, (err) => {
-                if (err) reject(err);
-                console.info(`Listening http on port: ${this.server.address().port}, to access the API documentation go to http://${host}:${this.server.address().port}/api-docs/`);
-                resolve(this);
-            });
-        });
+        // return new Promise((resolve, reject) => {
+        //     this.server = this.app.listen(port, host, (err) => {
+        //         if (err) reject(err);
+        //         console.info(`Listening http on port: ${this.server.address().port}, to access the API documentation go to http://${host}:${this.server.address().port}/api-docs/`);
+        //         resolve(this);
+        //     });
+        // });
+
+        this.app.listen(port, () => console.log('Server running on port'));
     }
 
     stop() {
