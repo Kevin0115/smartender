@@ -93,7 +93,7 @@ class HttpServer {
             res.status(200).send(transactionFromBlock);
         });
 
-        this.app.get('/blockchain/transactions', (req, res) => {
+        this.app.get('/transactions', (req, res) => {
             if (req.headers['accept'] && req.headers['accept'].includes('text/html'))
                 res.render('blockchain/transactions/index.pug', {
                     pageTitle: 'Unconfirmed Transactions',

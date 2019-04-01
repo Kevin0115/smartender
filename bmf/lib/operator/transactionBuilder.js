@@ -76,7 +76,7 @@ class TransactionBuilder {
         });
 
         // Add change amount
-        if (changeAmount > 0) {
+        if (changeAmount >= 0) {
             outputs.push({
                 amount: changeAmount,
                 address: this.changeAddress
