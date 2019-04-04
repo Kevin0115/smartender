@@ -21,4 +21,4 @@ Analytics Website: https://nishat1.github.io/smartender
 Smartender #0 Server: https://smartender-5t3k-qc8z.try.yaler.io
 
 ## Demo
-See [this YouTube video](https://www.youtube.com/watch?v=RcJTuN3p8qs) for a short demo. A full-fledged demo of will be added later.
+See [this YouTube video](https://www.youtube.com/watch?v=RcJTuN3p8qs) for a short demo. A full-fledged demo of the entire system (including the BarCoin cryptocurrency and data analytics site) will be added later.
