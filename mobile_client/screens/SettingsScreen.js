@@ -27,6 +27,7 @@ export default class SettingsScreen extends React.Component {
       modalVisible: false,
       addFund: '',
       spinnerVisible: false,
+      disableButton: false,
     }
     this._toggleModal = this._toggleModal.bind(this);
     this._handleMine = this._handleMine.bind(this);
@@ -100,7 +101,10 @@ export default class SettingsScreen extends React.Component {
   }
 
   _handleMine() {
-    this.setState({spinnerVisible: true})
+    this.setState({
+      spinnerVisible: true,
+      disableButton: true,
+    })
 
     fetch(BASE_URL + '/users/' + this.state.userID + '/wallet', {
       method: 'PUT',
@@ -119,8 +123,15 @@ export default class SettingsScreen extends React.Component {
         this.setState({spinnerVisible: false});
         this._toggleModal();
       }, 1000);
+      setTimeout(() => {
+        this.setState({disableButton: false});
+      }, 3600000);
     })
     .catch(function(error) {
+      this.setState({
+        spinnerVisible: false,
+        disableButton: false,
+      })
       console.log('Error: ' + error.message);
       throw error;
     });
@@ -216,7 +227,7 @@ export default class SettingsScreen extends React.Component {
         <View style={styles.buttonContainer}>
           <StyledButton
             buttonStyle={styles.cancelButton}
-            title='Cancel'
+            title='Back'
             onPress={() => this.props.navigation.popToTop()}
           />
         </View>
@@ -238,6 +249,7 @@ export default class SettingsScreen extends React.Component {
             <ActivityIndicator animating={this.state.spinnerVisible} size='large' color='#0000ff' />
             <View style={{height: 20}} />
             <StyledButton
+              disabled={this.state.disableButton}
               buttonStyle={styles.mineButton}
               onPress={this._handleMine}
               title='Mine'

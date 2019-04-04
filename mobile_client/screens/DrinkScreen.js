@@ -116,7 +116,7 @@ export default class DrinkScreen extends React.Component {
         <StyledText style={styles.customize}>
           Number of Shots: {this.state.shots}
         </StyledText>
-        <View style={{flex: 1.5, marginTop: 20}}>
+        <View style={{flex: 1.5}}>
           <StyledButton
             buttonStyle={styles.proceed}
             title={'Proceed - $' + this.state.price.toFixed(2)}

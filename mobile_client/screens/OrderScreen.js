@@ -53,6 +53,9 @@ export default class OrderScreen extends React.Component {
   }
 
   async _updateUserData() {
+    if (!this.state.status || this.state.noInventory) {
+      return;
+    }
     const userData = JSON.parse(await AsyncStorage.getItem('fbUser'));
 
     fetch(BASE_URL + '/users/' + userData.id + '/drinks', {
