@@ -27,7 +27,7 @@ export default class OrderScreen extends React.Component {
   componentDidMount() {
     setTimeout(() => {
       this.setState({response: true});
-    }, 2000)
+    }, 3000)
     fetch(BASE_URL + '/orders', {
       method: 'POST',
       headers: {
@@ -37,8 +37,9 @@ export default class OrderScreen extends React.Component {
     })
     .then(res => res.json())
     .then(json => {
+      console.log(json);
       this.setState({
-        status: json.busy === false,
+        status: json.status !== 'Error' && json.busy === false,
         noInventory: json.status === 'No Inventory'
       });
     })
