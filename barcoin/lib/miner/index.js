@@ -15,7 +15,6 @@ class Miner {
         let baseBlock = Miner.generateNextBlock(rewardAddress, rewardFlag, this.blockchain);
         process.execArgv = R.reject((item) => item.includes('debug'), process.execArgv);
 
-        /* istanbul ignore next */
         const thread = spawn(function (input, done) {
             /*eslint-disable */
             require(input.__dirname + '/../util/consoleWrapper.js')('mine-worker', input.logLevel);
@@ -95,7 +94,7 @@ class Miner {
         // Get the first two available transactions, if there aren't TRANSACTIONS_PER_BLOCK, it's empty
         let transactions = R.defaultTo([], R.take(Config.TRANSACTIONS_PER_BLOCK, selectedTransactions));
 
-        // // Add fee transaction (1 satoshi per transaction)        
+        // // possibly add fee transaction (Config.FEE_PER_TRANSACTION BarCoin per transaction)        
         // if (transactions.length > 0) {
         //     let feeTransaction = Transaction.fromJson({
         //         id: CryptoUtil.randomId(64),
@@ -144,13 +143,10 @@ class Miner {
         });
     }
 
-    /* istanbul ignore next */
     static proveWorkFor(jsonBlock, difficulty) {
         let blockDifficulty = null;
         let start = process.hrtime();
         let block = Block.fromJson(jsonBlock);
-
-        // INFO: Every cryptocurrency has a different way to prove work, this is a simple hash sequence
 
         // Loop incrementing the nonce to find the hash at desired difficulty
         do {
@@ -158,7 +154,7 @@ class Miner {
             block.nonce++;
             block.hash = block.toHash();
             blockDifficulty = block.getDifficulty();
-        } while (blockDifficulty >= difficulty);
+        } while (blockDifficulty < difficulty);
         console.info(`Block found: time '${process.hrtime(start)[0]} sec' dif '${difficulty}' hash '${block.hash}' nonce '${block.nonce}'`);
         return block;
     }

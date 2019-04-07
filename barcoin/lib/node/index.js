@@ -131,7 +131,7 @@ class Node {
                 self.syncTransactions(Transactions.fromJson(res.body));
             })
             .catch((err) => {
-                console.warn(`Unable to get transations from ${URL}: ${err.message}`);
+                console.warn(`Unable to get transactions from ${URL}: ${err.message}`);
             });
     }
 

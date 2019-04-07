@@ -6,4 +6,4 @@ WORKDIR /barcoin
 
 ENTRYPOINT node bin/barcoin.js
 
-EXPOSE 3001
+EXPOSE 3002

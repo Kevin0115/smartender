@@ -3,14 +3,15 @@ const CryptoUtil = require('../util/cryptoUtil');
 const CryptoEdDSAUtil = require('../util/cryptoEdDSAUtil');
 const ArgumentError = require('../util/argumentError');
 const Transaction = require('../blockchain/transaction');
+const Config = require('../config');
 
 class TransactionBuilder {
     constructor() {
-        this.listOfUTXO = null;
+        this.listOfUTXO = null; // unspent transaction outputs of an address will the source of a transaction 
         this.outputAddresses = null;
         this.totalAmount = null;
         this.changeAddress = null;
-        this.feeAmount = 0;
+        this.feeAmount = Config.FEE_PER_TRANSACTION; // it is 0 will be explained later
         this.secretKey = null;
         this.type = 'regular';
     }
@@ -85,8 +86,7 @@ class TransactionBuilder {
             throw new ArgumentError('The sender does not have enough to pay for the transaction.');
         }        
 
-        // The remaining value is the fee to be collected by the block's creator.        
-
+        // The remaining value is the fee to be collected by the block's creator if one exists.        
         return Transaction.fromJson({
             id: CryptoUtil.randomId(64),
             hash: null,

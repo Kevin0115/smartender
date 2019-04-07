@@ -12,6 +12,7 @@ const HTTPError = require('./httpError');
 const ArgumentError = require('../util/argumentError');
 const CryptoUtil = require('../util/cryptoUtil');
 const timeago = require('timeago.js');
+const Config = require('../config');
 
 class HttpServer {
     constructor(node, blockchain, operator, miner) {
@@ -184,6 +185,14 @@ class HttpServer {
 
                 let transactionCreated = blockchain.addTransaction(Transaction.fromJson(newTransaction));
                 res.status(201).send(transactionCreated);
+                
+                // if there more more than TRANSACTIONS_PER_BLOCK unconfined transactions waiting mine them with no reward
+                if (blockchain.getAllTransactions().length >= Config.TRANSACTIONS_PER_BLOCK){
+                    miner.mine(reg.body.fromAddress, false).then((newBlock) => {
+                        newBlock = Block.fromJson(newBlock);
+                        blockchain.addBlock(newBlock);
+                    });
+                }
             } catch (ex) {
                 if (ex instanceof ArgumentError || ex instanceof TransactionAssertionError) throw new HTTPError(400, ex.message, walletId, ex);
                 else throw ex;
@@ -241,13 +250,6 @@ class HttpServer {
             res.status(201).send(newPeer);
         });
 
-        this.app.get('/node/transactions/:transactionId([a-zA-Z0-9]{64})/confirmations', (req, res) => {
-            node.getConfirmations(req.params.transactionId)
-                .then((confirmations) => {
-                    res.status(200).send({ confirmations: confirmations });
-                });
-        });
-
         this.app.post('/miner/mine', (req, res, next) => {
             miner.mine(req.body.rewardAddress, req.body.needsReward)
                 .then((newBlock) => {
@@ -256,8 +258,10 @@ class HttpServer {
                     res.status(201).send(newBlock);
                 })
                 .catch((ex) => {
-                    if (ex instanceof BlockAssertionError && ex.message.includes('Invalid index')) next(new HTTPError(409, 'A new block were added before we were able to mine one'), null, ex);
-                    else next(ex);
+                    if (ex instanceof BlockAssertionError && ex.message.includes('Invalid index')) 
+                        next(new HTTPError(409, 'A new block were added before we were able to mine one'), null, ex);
+                    else 
+                        next(ex);
                 });
         });
 
@@ -269,14 +273,6 @@ class HttpServer {
     }
 
     listen(host, port) {
-        // return new Promise((resolve, reject) => {
-        //     this.server = this.app.listen(port, host, (err) => {
-        //         if (err) reject(err);
-        //         console.info(`Listening http on port: ${this.server.address().port}, to access the API documentation go to http://${host}:${this.server.address().port}/api-docs/`);
-        //         resolve(this);
-        //     });
-        // });
-
         this.app.listen(port, () => console.log('Server running on port'));
     }
 

@@ -56,9 +56,29 @@ class Blockchain {
         return R.last(this.blocks);
     }
 
-    getDifficulty(index) {        
-        // Calculates the difficulty based on the index since the difficulty value increases every X blocks.
-        return Config.pow.getDifficulty(this.blocks, index);        
+    getDifficulty() {        
+        // Proof-of-work difficulty settings
+        const BASE_DIFFICULTY = 1;
+        const BLOCK_GENERATION_INTERVAL  = 40;
+        const DIFFICULTY_ADJUSTMENT_INTERVAL  = 8;
+
+        const lastblock  = this.getLastBlock();
+        if (lastblock.index % DIFFICULTY_ADJUSTMENT_INTERVAL === 0 && lastblock.index !== 0) {
+            const prevAdjustmentBlock = this.blocks[this.blocks.length - DIFFICULTY_ADJUSTMENT_INTERVAL];
+            const timeExpected = BLOCK_GENERATION_INTERVAL * DIFFICULTY_ADJUSTMENT_INTERVAL;
+            const timeTaken = latestBlock.timestamp - prevAdjustmentBlock.timestamp;
+            if (timeTaken < timeExpected / 2) {
+                return prevAdjustmentBlock.getDifficulty() + 1;
+            } else if (timeTaken > timeExpected * 2) {
+                return prevAdjustmentBlock.getDifficulty() - 1;
+            } else {
+                return prevAdjustmentBlock.getDifficulty();
+            }
+        } else if (lastblock.index === 0) {
+            return BASE_DIFFICULTY;
+        } else {
+            return lastblock.getDifficulty();
+        }       
     }
 
     getAllTransactions() {
@@ -91,7 +111,7 @@ class Blockchain {
         R.forEach((block) => {
             this.addBlock(block, false);
         }, newBlocks);
-
+        // needed for that peer stuff that will be mentioned later
         this.emitter.emit('blockchainReplaced', newBlocks);
     }
 
@@ -162,12 +182,12 @@ class Blockchain {
         } else if (blockHash !== newBlock.hash) { // Check if the hash is correct
             console.error(`Invalid hash: expected '${blockHash}' got '${newBlock.hash}'`);
             throw new BlockAssertionError(`Invalid hash: expected '${blockHash}' got '${newBlock.hash}'`);
-        } else if (newBlock.getDifficulty() >= this.getDifficulty(newBlock.index)) { // If the difficulty level of the proof-of-work challenge is correct
-            console.error(`Invalid proof-of-work difficulty: expected '${newBlock.getDifficulty()}' to be smaller than '${this.getDifficulty(newBlock.index)}'`);
+        } else if (newBlock.getDifficulty() >= this.getDifficulty()) { // If the difficulty level of the proof-of-work challenge is correct
+            console.error(`Invalid proof-of-work difficulty: expected '${newBlock.getDifficulty()}' to be smaller than '${this.getDifficulty()}'`);
             throw new BlockAssertionError(`Invalid proof-of-work difficulty: expected '${newBlock.getDifficulty()}' be smaller than '${this.getDifficulty()}'`);
         }
 
-        // INFO: Here it would need to check if the block follows some expectation regarging the minimal number of transactions, value or data size to avoid empty blocks being mined.
+        // INFO: Here it would need to check if the block follows some expectation regarding the minimal number of transactions, value or data size to avoid empty blocks being mined.
 
         // For each transaction in this block, check if it is valid
         R.forEach(this.checkTransaction.bind(this), newBlock.transactions, referenceBlockchain);
