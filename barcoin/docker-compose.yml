@@ -15,7 +15,7 @@ services:
     environment:      
       - HOST=0.0.0.0
       - NAME=2
-      - PEERS=http://node1:3001      
+      - PEERS=http://node1:3002      
     build:
       context: ./
       dockerfile: Dockerfile
@@ -29,7 +29,7 @@ services:
     environment:
       - HOST=0.0.0.0
       - NAME=3
-      - PEERS=http://node2:3001      
+      - PEERS=http://node2:3002      
     build:
       context: ./
       dockerfile: Dockerfile

@@ -48,7 +48,7 @@ done
 shift $((OPTIND - 1))
 
 HOST="${HOST:-0.0.0.0}"
-PORT="${PORT:-3001}"
+PORT="${PORT:-3002}"
 NAME="${NAME:-1}"
 
 echo "Running barcoin inside docker with the following arguments:
