@@ -12,13 +12,13 @@ Drinks are customizable (double, virgin, regular), and are paid for by our in-ho
 ## Links
 App: https://expo.io/@kevin0115/smartender
 
-Central Server: http://smartender.kevnchoi.com
+Central Server: http://smartender.kevnchoi.com (offline)
 
 Blockchain Server: http://barcoin.kevnchoi.com
 
 Analytics Website: https://nishat1.github.io/smartender
 
-Smartender #0 Server: https://smartender-5t3k-qc8z.try.yaler.io
+Smartender #0 Server: https://pi.kevnchoi.com (offline)
 
 ## Demo
 See [this YouTube video](https://www.youtube.com/watch?v=o8KIC-9Z7Os) for a short demo.
