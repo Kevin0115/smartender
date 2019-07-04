@@ -20,12 +20,13 @@ router.post('/', function(req, res) {
   Analytics.create({
     count: 1,
     timestamp: req.body.timestamp
-  })
-  .exec(function(err, analytics) {
-    if (err) {
+  }, function(err, analytics) {
+    if(err) {
       res.send({status: 'Error'});
     } else {
       res.send({status: 'Count updated'});
     }
   })
 })
+
+module.exports = router;
