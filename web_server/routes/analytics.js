@@ -23,7 +23,7 @@ router.get('/count', function(req, res) {
     if(err) {
       res.send({status: 'Error'})
     } else {
-      res.send(count);
+      res.send({count: count});
     }
   })
 })
