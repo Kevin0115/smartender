@@ -16,6 +16,19 @@ router.get('/', function(req, res) {
   })
 })
 
+// Get number of visits
+router.get('/count', function(req, res) {
+  Analytics.count({})
+  .exec(function(err, count) {
+    if(err) {
+      res.send({status: 'Error'})
+    } else {
+      res.send(count);
+    }
+  })
+})
+
+// Post new site visit
 router.post('/', function(req, res) {
   Analytics.create({
     count: 1,
