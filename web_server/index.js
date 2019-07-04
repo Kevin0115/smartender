@@ -2,8 +2,12 @@
 var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
-var http = require('http');
+var https = require('https');
 var fs = require('fs');
+var options = {
+  key: fs.readFileSync('./privatekey.pem'),
+  cert: fs.readFileSync('./server.crt')
+};
 
 var orders = require('./routes/orders');
 var drinks = require('./routes/drinks');
@@ -12,7 +16,7 @@ var users = require('./routes/users');
 var analytics = require('./routes/analytics');
 
 // Declare application parameters
-var HTTP_PORT = 80;
+var HTTPS_PORT = 443;
 
 // Configure
 require('./config/configuration.js')(app, mongoose);
@@ -32,8 +36,8 @@ app.use('/users', users);
 app.use('/analytics', analytics);
 
 // Server
-var httpServer = http.createServer(app);
+var httpsServer = https.createServer(options, app);
 
-httpServer.listen(HTTP_PORT, function() {
-  console.log('[Express.js] Server listening on PORT: '+ HTTP_PORT);
+httpsServer.listen(HTTPS_PORT, function() {
+  console.log('[Express.js] Server listening on PORT: '+ HTTPS_PORT);
 });
