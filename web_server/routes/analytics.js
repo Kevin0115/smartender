@@ -18,7 +18,7 @@ router.get('/', function(req, res) {
 
 // Get number of visits
 router.get('/count', function(req, res) {
-  Analytics.count({})
+  Analytics.countDocuments({})
   .exec(function(err, count) {
     if(err) {
       res.send({status: 'Error'})
