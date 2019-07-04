@@ -9,6 +9,7 @@ var orders = require('./routes/orders');
 var drinks = require('./routes/drinks');
 var machines = require('./routes/machines');
 var users = require('./routes/users');
+var analytics = require('./routes/analytics');
 
 // Declare application parameters
 var HTTP_PORT = 80;
@@ -21,12 +22,14 @@ Orders = require('./models/Orders.js');
 Drinks = require('./models/Drinks.js');
 Machines = require('./models/Machines.js');
 Users = require('./models/Users.js');
+Analytics = require('./models/Analytics.js');
 
 // Routes
 app.use('/orders', orders);
 app.use('/drinks', drinks);
 app.use('/machines', machines);
 app.use('/users', users);
+app.use('/analytics', analytics);
 
 // Server
 var httpServer = http.createServer(app);
