@@ -31,13 +31,14 @@ router.get('/count', function(req, res) {
 // Post new site visit
 router.post('/', function(req, res) {
   Analytics.create({
-    count: 1,
-    timestamp: req.body.timestamp
+    sessionId: req.body.sessionId,
+    timestamp: req.body.timestamp,
+    eventType: req.body.eventType
   }, function(err, analytics) {
     if(err) {
       res.send({status: 'Error'});
     } else {
-      res.send({status: 'Count updated'});
+      res.send({status: 'Updated'});
     }
   })
 })

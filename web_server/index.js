@@ -12,7 +12,7 @@ var users = require('./routes/users');
 var analytics = require('./routes/analytics');
 
 // Declare application parameters
-var HTTP_PORT = 80;
+var HTTP_PORT = 8080;
 
 // Configure
 require('./config/configuration.js')(app, mongoose);

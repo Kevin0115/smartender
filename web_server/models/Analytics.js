@@ -1,8 +1,9 @@
 var mongoose = require('mongoose');
 
 var AnalyticsSchema = mongoose.Schema({
-  count: Number,
-  timestamp: String
+  sessionId: String,
+  timestamp: String,
+  eventType: String
 })
 
 module.exports = mongoose.model('Analytics', AnalyticsSchema);
