@@ -30,17 +30,35 @@ router.get('/count', function(req, res) {
 
 // Post new site visit
 router.post('/', function(req, res) {
-  Analytics.create({
-    sessionId: req.body.sessionId,
-    timestamp: req.body.timestamp,
-    eventType: req.body.eventType
-  }, function(err, analytics) {
-    if(err) {
-      res.send({status: 'Error'});
+  Analytics.findOne({sessionId: req.body.sessionId})
+  .exec(function(err, sessionId) {
+    if (err) {
+      res.send({status: 'Error: ' + err});
+    } else if (sessionId == undefined) {
+      Analytics.create({
+        sessionId: req.body.sessionId,
+        events: req.body.events
+      }, function(err, analytics) {
+        if(err) {
+          res.send({status: 'Error: ' + err});
+        } else {
+          res.send({status: 'New session inserted'});
+        }
+      });
     } else {
-      res.send({status: 'Updated'});
+      Analytics.updateOne(
+        {sessionId: req.body.sessionId},
+        {$push: {events: req.body.events[0]}}
+      )
+      .exec(function(err, analytics) {
+        if (err) {
+          res.send({status: 'Error: ' + err});
+        } else {
+          res.send({status: 'Updated session events'});
+        }
+      });
     }
-  })
+  });
 })
 
 module.exports = router;
